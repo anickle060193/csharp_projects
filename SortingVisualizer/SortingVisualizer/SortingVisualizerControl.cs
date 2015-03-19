@@ -20,37 +20,10 @@ namespace SortingVisualizer
         private static readonly Font _modificationsFont = new Font( "Courier", 72 );
         private static readonly SolidBrush _modificationBrush = new SolidBrush( Color.FromArgb( 100, Color.Black ) );
         private MenuItem _currentMenuItem;
-        private Sorter _sorter = new BubbleSorter();
-
-        public Sorter Sorter
-        {
-            get { return _sorter; }
-            set
-            {
-                _sorter = value;
-                Form parent = this.Parent as Form;
-                if( parent != null )
-                {
-                    parent.Text = _sorter.ToString();
-                }
-            }
-        }
-
-        public int ArraySize
-        {
-            get { return Array.Length; }
-            private set
-            {
-                Array = new int[ value ];
-                FillArray();
-            }
-        }
-
-        public int[] Array { get; private set; }
-
-        public SortRecord[] History { get; private set; }
-
-        public int CurrentRecord { get; private set; }
+        private Sorter _sorter;
+        private int[] _array;
+        private SortRecord[] _history;
+        private int _currentRecord;
 
         public int MaxUpdates { get; private set; }
 
@@ -65,7 +38,8 @@ namespace SortingVisualizer
             InitializeComponent();
 
             ResizeRedraw = true;
-            ArraySize = 1000;
+            _array = new int[ 1000 ];
+            FillArray();
             UpdateInterval = 1;
             MaxUpdates = 250;
 
@@ -80,7 +54,7 @@ namespace SortingVisualizer
                 sorters.Add( sorter );
             }
 
-            Sorter = sorters[ 0 ];
+            _sorter = sorters[ 0 ];
 
             ContextMenu = new ContextMenu();
             foreach( Sorter sorter in sorters )
@@ -89,7 +63,7 @@ namespace SortingVisualizer
                 item.Text = sorter.ToString();
                 item.Tag = sorter;
                 item.Click += ContextMenuItem_Click;
-                if( sorter.Equals( Sorter ) )
+                if( sorter.Equals( _sorter ) )
                 {
                     item.Checked = true;
                     _currentMenuItem = item;
@@ -106,7 +80,7 @@ namespace SortingVisualizer
                 Sorter sorter = item.Tag as Sorter;
                 if( sorter != null )
                 {
-                    Sorter = sorter;
+                    _sorter = sorter;
                     item.Checked = true;
                     _currentMenuItem.Checked = false;
                     _currentMenuItem = item;
@@ -116,30 +90,30 @@ namespace SortingVisualizer
 
         public void FillArray()
         {
-            for( int i = 0; i < ArraySize; i++ )
+            for( int i = 0; i < _array.Length; i++ )
             {
-                Array[ i ] = i + 1;
+                _array[ i ] = i + 1;
             }
             Invalidate();
         }
 
         public void FillArrayReverse()
         {
-            for( int i = 0; i < ArraySize; i++ )
+            for( int i = 0; i < _array.Length; i++ )
             {
-                Array[ i ] = ArraySize - i;
+                _array[ i ] = _array.Length - i;
             }
             Invalidate();
         }
 
         public void RandomizeArray()
         {
-            for( int i = 0; i < ArraySize; i++ )
+            for( int i = 0; i < _array.Length; i++ )
             {
-                int index = _random.Next( ArraySize );
-                int temp = Array[ index ];
-                Array[ index ] = Array[ i ];
-                Array[ i ] = temp;
+                int index = _random.Next( _array.Length );
+                int temp = _array[ index ];
+                _array[ index ] = _array[ i ];
+                _array[ i ] = temp;
             }
             Invalidate();
         }
@@ -149,32 +123,32 @@ namespace SortingVisualizer
             uxUpdateTimer.Stop();
             FillArray();
             RandomizeArray();
-            History = SorterRecorder.RecordSort( Array, Sorter );
+            _history = SorterRecorder.RecordSort( _array, _sorter );
             PlayHistory();
         }
 
         public void PlayHistory()
         {
-            CurrentRecord = 0;
+            _currentRecord = 0;
             uxUpdateTimer.Start();
         }
 
         protected override void OnPaint( PaintEventArgs e )
         {
-            if( ArraySize > 0 )
+            if( _array.Length > 0 )
             {
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
-                float columnWidth = (float)this.Width / ArraySize;
-                float rowHeight = (float)this.Height / ( ArraySize + 1 );
+                float columnWidth = (float)this.Width / _array.Length;
+                float rowHeight = (float)this.Height / ( _array.Length + 1 );
                 SolidBrush b = new SolidBrush( Color.White );
-                for( int i = 0; i < ArraySize; i++ )
+                for( int i = 0; i < _array.Length; i++ )
                 {
-                    int value = Array[ i ];
+                    int value = _array[ i ];
                     float width = columnWidth;
                     float height = value * rowHeight;
                     float x = i * columnWidth;
                     float y = this.Height - height;
-                    b.Color = Utilities.ColorFromHSL( (double)( value - 1 ) / ArraySize, 0.5, 0.5 );
+                    b.Color = Utilities.ColorFromHSL( (double)( value - 1 ) / _array.Length, 0.5, 0.5 );
                     e.Graphics.FillRectangle( b, x, y, width, height );
                 }
             }
@@ -184,7 +158,7 @@ namespace SortingVisualizer
         private void OutputModifications( Graphics g )
         {
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
-            String modifications = CurrentRecord.ToString( "#,##0" );
+            String modifications = _currentRecord.ToString( "#,##0" );
             SizeF modSize = g.MeasureString( modifications, _modificationsFont );
             float modX = ( this.Width - modSize.Width ) / 2.0f;
             float modY = ( this.Height - modSize.Height ) / 2.0f;
@@ -193,13 +167,13 @@ namespace SortingVisualizer
 
         private void uxUpdateTimer_Tick( object sender, EventArgs e )
         {
-            int updates = Math.Max( 1, (int)( (float)History.Length / MaxUpdates ) );
+            int updates = Math.Max( 1, (int)( (float)_history.Length / MaxUpdates ) );
             for( int i = 0; i < updates; i++ )
             {
-                if( CurrentRecord < History.Length )
+                if( _currentRecord < _history.Length )
                 {
-                    History[ CurrentRecord ].ApplyRecord( Array );
-                    CurrentRecord++;
+                    _history[ _currentRecord ].ApplyRecord( _array );
+                    _currentRecord++;
                 }
                 else
                 {

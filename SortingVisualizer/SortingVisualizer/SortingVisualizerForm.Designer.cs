@@ -38,7 +38,6 @@
             this.uxSortingVisualizerControl.Location = new System.Drawing.Point(0, 0);
             this.uxSortingVisualizerControl.Name = "uxSortingVisualizerControl";
             this.uxSortingVisualizerControl.Size = new System.Drawing.Size(484, 311);
-            this.uxSortingVisualizerControl.Sorter = bubbleSorter1;
             this.uxSortingVisualizerControl.TabIndex = 0;
             // 
             // SortingVisualizerForm
