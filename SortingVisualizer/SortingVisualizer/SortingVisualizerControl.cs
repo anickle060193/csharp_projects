@@ -19,6 +19,8 @@ namespace SortingVisualizer
         private readonly Random _random = new Random();
         private static readonly Font _modificationsFont = new Font( "Courier", 72 );
         private static readonly SolidBrush _modificationBrush = new SolidBrush( Color.FromArgb( 100, Color.Black ) );
+
+        private BackgroundWorker _worker;
         private MenuItem _currentMenuItem;
         private Sorter _sorter;
         private int[] _array;
@@ -70,6 +72,16 @@ namespace SortingVisualizer
                 }
                 ContextMenu.MenuItems.Add( item );
             }
+
+            _worker = new BackgroundWorker();
+            _worker.DoWork += (DoWorkEventHandler)delegate( object sender, DoWorkEventArgs e )
+            {
+                _history = SorterRecorder.RecordSort( _array, _sorter );
+            };
+            _worker.RunWorkerCompleted += (RunWorkerCompletedEventHandler)delegate( object sender, RunWorkerCompletedEventArgs e )
+            {
+                PlayHistory();
+            };
         }
 
         private void ContextMenuItem_Click( object sender, EventArgs e )
@@ -120,11 +132,13 @@ namespace SortingVisualizer
 
         public void DisplaySort()
         {
-            uxUpdateTimer.Stop();
-            FillArray();
-            RandomizeArray();
-            _history = SorterRecorder.RecordSort( _array, _sorter );
-            PlayHistory();
+            if( !_worker.IsBusy )
+            {
+                uxUpdateTimer.Stop();
+                FillArray();
+                RandomizeArray();
+                _worker.RunWorkerAsync();
+            }
         }
 
         public void PlayHistory()
