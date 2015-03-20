@@ -16,6 +16,8 @@ namespace SortingVisualizer
         public SortingVisualizerForm()
         {
             InitializeComponent();
+
+            this.Controls.Add( new SortingVisualizerControl() { Dock = DockStyle.Fill } );
         }
     }
 }

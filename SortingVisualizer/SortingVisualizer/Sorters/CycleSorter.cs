@@ -8,16 +8,16 @@ namespace SortingVisualizer.Sorters
 {
     class CycleSorter : Sorter
     {
-        public override void Sort( IList<int> collection )
+        public override void Sort( SortingArray array )
         {
-            for( int cycleStart = 0; cycleStart < collection.Count; cycleStart++ )
+            for( int cycleStart = 0; cycleStart < array.Length; cycleStart++ )
             {
-                int item = collection[ cycleStart ];
+                int item = array[ cycleStart ];
 
                 int pos = cycleStart;
-                for( int i = cycleStart + 1; i < collection.Count; i++ )
+                for( int i = cycleStart + 1; i < array.Length; i++ )
                 {
-                    if( collection[ i ] < item )
+                    if( array.CompareValues( array[ i ], item ) < 0 )
                     {
                         pos++;
                     }
@@ -28,21 +28,21 @@ namespace SortingVisualizer.Sorters
                     while( pos != cycleStart )
                     {
                         pos = cycleStart;
-                        for( int i = cycleStart + 1; i < collection.Count; i++ )
+                        for( int i = cycleStart + 1; i < array.Length; i++ )
                         {
-                            if( collection[ i ] < item )
+                            if( array.CompareValues( array[ i ], item ) < 0 )
                             {
                                 pos++;
                             }
                         }
 
-                        while( item == collection[ pos ] )
+                        while( item == array[ pos ] )
                         {
                             pos++;
                         }
                         int temp = item;
-                        item = collection[ pos ];
-                        collection[ pos ] = temp;
+                        item = array[ pos ];
+                        array[ pos ] = temp;
                     }
                 }
             }

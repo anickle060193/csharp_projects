@@ -11,21 +11,25 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using SortingVisualizer.Sorters;
 using System.Drawing.Text;
+using System.Diagnostics;
 
 namespace SortingVisualizer
 {
     public partial class SortingVisualizerControl : UserControl
     {
         private readonly Random _random = new Random();
-        private static readonly Font _modificationsFont = new Font( "Courier", 72 );
-        private static readonly SolidBrush _modificationBrush = new SolidBrush( Color.FromArgb( 100, Color.Black ) );
+        private static readonly Font _mainFont = new Font( "Courier", 72 );
+        private static readonly SolidBrush _mainBrush = new SolidBrush( Color.FromArgb( 100, Color.Black ) );
+        private static readonly Font _secondaryFont = new Font( "Courier", 20 );
+        private static readonly SolidBrush _secondaryBrush = new SolidBrush( Color.FromArgb( 100, Color.Black ) );
 
         private BackgroundWorker _worker;
         private MenuItem _currentMenuItem;
         private Sorter _sorter;
         private int[] _array;
-        private SortEdit[] _history;
-        private int _currentRecord;
+        private int _updatesPerTick;
+        private SortEdit _currentEdit;
+        private IEnumerator<SortEdit> _historyEnumerator;
 
         public int MaxUpdates { get; private set; }
 
@@ -76,7 +80,15 @@ namespace SortingVisualizer
             _worker = new BackgroundWorker();
             _worker.DoWork += (DoWorkEventHandler)delegate( object sender, DoWorkEventArgs e )
             {
-                _history = SorterRecorder.RecordSort( _array, _sorter );
+                SortingArray a = new SortingArray( _array );
+                _sorter.Sort( a );
+                Debug.Assert( a.IsSorted, _sorter.ToString() + " did not properly sort the array." );
+                _updatesPerTick = (int)( (float)a.History.Count / MaxUpdates );
+                if( _historyEnumerator != null )
+                {
+                    _historyEnumerator.Dispose();
+                }
+                _historyEnumerator = a.History.GetEnumerator();
             };
             _worker.RunWorkerCompleted += (RunWorkerCompletedEventHandler)delegate( object sender, RunWorkerCompletedEventArgs e )
             {
@@ -118,6 +130,14 @@ namespace SortingVisualizer
             Invalidate();
         }
 
+        public void FillArrayDuplicates()
+        {
+            for( int i = 0; i < _array.Length; i++ )
+            {
+                _array[ i ] = _random.Next( (int)( _array.Length * 0.1f ) ) + _array.Length / 2;
+            }
+        }
+
         public void RandomizeArray()
         {
             for( int i = 0; i < _array.Length; i++ )
@@ -130,20 +150,21 @@ namespace SortingVisualizer
             Invalidate();
         }
 
-        public void DisplaySort()
+        public void StartSort()
         {
             if( !_worker.IsBusy )
             {
                 uxUpdateTimer.Stop();
-                FillArray();
-                RandomizeArray();
+                _currentEdit = null;
+                FillArrayReverse();
+                //FillArray();
+                //RandomizeArray();
                 _worker.RunWorkerAsync();
             }
         }
 
         public void PlayHistory()
         {
-            _currentRecord = 0;
             uxUpdateTimer.Start();
         }
 
@@ -153,7 +174,7 @@ namespace SortingVisualizer
             {
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
                 float columnWidth = (float)this.Width / _array.Length;
-                float rowHeight = (float)this.Height / ( _array.Length + 1 );
+                float rowHeight = (float)this.Height / _array.Length;
                 SolidBrush b = new SolidBrush( Color.White );
                 for( int i = 0; i < _array.Length; i++ )
                 {
@@ -166,28 +187,85 @@ namespace SortingVisualizer
                     e.Graphics.FillRectangle( b, x, y, width, height );
                 }
             }
-            OutputModifications( e.Graphics );
+            OutputNumbers( e.Graphics );
         }
 
-        private void OutputModifications( Graphics g )
+        private void OutputNumbers( Graphics g )
         {
+            int modifications = 0;
+            int compares = 0;
+            int reads = 0;
+            int writes = 0;
+            if( _currentEdit != null )
+            {
+                modifications = _currentEdit.EditNumber;
+                compares = _currentEdit.Comparisons;
+                reads = _currentEdit.Reads;
+                writes = _currentEdit.Writes;
+            }
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
-            String modifications = _currentRecord.ToString( "#,##0" );
-            SizeF modSize = g.MeasureString( modifications, _modificationsFont );
-            float modX = ( this.Width - modSize.Width ) / 2.0f;
-            float modY = ( this.Height - modSize.Height ) / 2.0f;
-            g.DrawString( modifications, _modificationsFont, _modificationBrush, modX, modY );
+
+            float verticalPadding = this.Height * 0.03f;
+            float horizontalPadding = this.Width * 0.02f;
+            float labelY = verticalPadding;
+            float labelHeight = g.MeasureString( "Test Label", _secondaryFont ).Height;
+            float textY = labelY + labelHeight;
+
+            // Comparisons Label
+            String s = "Comparisons";
+            SizeF size = g.MeasureString( s, _secondaryFont );
+            float x = horizontalPadding;
+            float y = labelY;
+            g.DrawString( s, _secondaryFont, _secondaryBrush, x, y );
+            // Comparisons Text
+            s = compares.ToString( "#,##0" );
+            size = g.MeasureString( s, _secondaryFont );
+            x = horizontalPadding;
+            y = textY;
+            g.DrawString( s, _secondaryFont, _secondaryBrush, x, y );
+
+            // Reads Label
+            s = "Reads";
+            size = g.MeasureString( s, _secondaryFont );
+            x = ( this.Width - size.Width ) / 2;
+            y = labelY;
+            g.DrawString( s, _secondaryFont, _secondaryBrush, x, y );
+            // Reads Text
+            s = reads.ToString( "#,##0" );
+            size = g.MeasureString( s, _secondaryFont );
+            x = ( this.Width - size.Width ) / 2;
+            y = textY;
+            g.DrawString( s, _secondaryFont, _secondaryBrush, x, y );
+
+            // Writes Label
+            s = "Writes";
+            size = g.MeasureString( s, _secondaryFont );
+            x = this.Width - size.Width - horizontalPadding;
+            y = labelY;
+            g.DrawString( s, _secondaryFont, _secondaryBrush, x, y );
+            // Writes Text
+            s = writes.ToString( "#,##0" );
+            size = g.MeasureString( s, _secondaryFont );
+            x = this.Width - size.Width - horizontalPadding;
+            y = textY;
+            g.DrawString( s, _secondaryFont, _secondaryBrush, x, y );
+
+            // Modifications
+            s = modifications.ToString( "#,##0" );
+            size = g.MeasureString( s, _mainFont );
+            x = ( this.Width - size.Width ) / 2.0f;
+            y = ( this.Height - size.Height ) / 2.0f;
+            g.DrawString( s, _mainFont, _mainBrush, x, y );
         }
 
         private void uxUpdateTimer_Tick( object sender, EventArgs e )
         {
-            int updates = Math.Max( 1, (int)( (float)_history.Length / MaxUpdates ) );
-            for( int i = 0; i < updates; i++ )
+            for( int i = 0; i < _updatesPerTick; i++ )
             {
-                if( _currentRecord < _history.Length )
+                if( _historyEnumerator.MoveNext() )
                 {
-                    _history[ _currentRecord ].ApplyRecord( _array );
-                    _currentRecord++;
+                    _currentEdit = _historyEnumerator.Current;
+                    _currentEdit.ApplyRecord( _array );
                 }
                 else
                 {
@@ -202,7 +280,7 @@ namespace SortingVisualizer
         {
             if( e.Button == MouseButtons.Left )
             {
-                DisplaySort();
+                StartSort();
             }
         }
     }

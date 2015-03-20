@@ -8,7 +8,7 @@ namespace SortingVisualizer.Sorters
 {
     class LSDRadixSorter : Sorter
     {
-        public override void Sort( IList<int> collection )
+        public override void Sort( SortingArray array )
         {
             LinkedList<int>[] counter = new LinkedList<int>[]
             {
@@ -24,20 +24,20 @@ namespace SortingVisualizer.Sorters
                 new LinkedList<int>()
             };
 
-            int maxDigitSymbols = collection.Max().ToString().Length;
-            for( int i = 1; i < maxDigitSymbols; i++ )
+            int maxDigitSymbols = array.Max().ToString().Length;
+            for( int i = 1; i <= maxDigitSymbols; i++ )
             {
-                for( int j = 0; j < collection.Count; j++ )
+                for( int j = 0; j < array.Length; j++ )
                 {
-                    int bucket = GetDigit( collection[ j ], i );
-                    counter[ bucket ].AddLast( collection[ j ] );
+                    int bucket = GetDigit( array[ j ], i );
+                    counter[ bucket ].AddLast( array[ j ] );
                 }
                 int pos = 0;
                 for( int j = 0; j < counter.Length; j++ )
                 {
                     while( counter[ j ].First != null )
                     {
-                        collection[ pos++ ] = counter[ j ].First.Value;
+                        array[ pos++ ] = counter[ j ].First.Value;
                         counter[ j ].RemoveFirst();
                     }
                 }

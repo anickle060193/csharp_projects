@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SorterRecorder.cs" />
+    <Compile Include="IIndexable.cs" />
     <Compile Include="SortingArray.cs" />
     <Compile Include="SortEdit.cs" />
     <Compile Include="Sorter.cs" />

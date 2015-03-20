@@ -8,9 +8,9 @@ namespace SortingVisualizer.Sorters
 {
     class CombSorter : Sorter
     {
-        public override void Sort( IList<int> collection )
+        public override void Sort( SortingArray array )
         {
-            int gap = collection.Count;
+            int gap = array.Length;
             double shrink = 1.3;
             bool swapped = false;
             while( gap != 1 || swapped )
@@ -21,11 +21,11 @@ namespace SortingVisualizer.Sorters
                     gap = 1;
                 }
                 swapped = false;
-                for( int i = 0; i + gap < collection.Count; i++ )
+                for( int i = 0; i + gap < array.Length; i++ )
                 {
-                    if( collection[ i ] > collection[ i + gap ] )
+                    if( array.CompareValuesAt( i, i + gap ) > 0 )
                     {
-                        Swap( i, i + gap, collection );
+                        array.Swap( i, i + gap );
                         swapped = true;
                     }
                 }

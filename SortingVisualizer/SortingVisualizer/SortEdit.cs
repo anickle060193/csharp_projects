@@ -8,6 +8,8 @@ namespace SortingVisualizer
 {
     public class SortEdit
     {
+        public int EditNumber { get; set; }
+
         public int Index { get; set; }
         public int OldValue { get; set; }
         public int NewValue { get; set; }
@@ -15,13 +17,6 @@ namespace SortingVisualizer
         public int Reads { get; set; }
         public int Writes { get; set; }
         public int Comparisons { get; set; }
-
-        public SortEdit( int index, int oldValue, int newValue )
-        {
-            Index = index;
-            OldValue = oldValue;
-            NewValue = newValue;
-        }
 
         public void ApplyRecord( int[] array )
         {

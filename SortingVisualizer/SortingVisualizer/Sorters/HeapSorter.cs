@@ -8,30 +8,30 @@ namespace SortingVisualizer.Sorters
 {
     class HeapSorter : Sorter
     {
-        public override void Sort( IList<int> collection )
+        public override void Sort( SortingArray array )
         {
-            Heapify( collection );
+            Heapify( array );
 
-            int end = collection.Count - 1;
+            int end = array.Length - 1;
             while( end > 0 )
             {
-                Swap( end, 0, collection );
+                array.Swap( end, 0 );
                 end--;
-                SiftDown( collection, 0, end );
+                SiftDown( array, 0, end );
             }
         }
 
-        private void Heapify( IList<int> collection )
+        private void Heapify( SortingArray array )
         {
-            int start = ( ( collection.Count - 2 ) / 2 );
+            int start = ( ( array.Length - 2 ) / 2 );
             while( start >= 0 )
             {
-                SiftDown( collection, start, collection.Count - 1 );
+                SiftDown( array, start, array.Length - 1 );
                 start--;
             }
         }
 
-        private void SiftDown( IList<int> collection, int start, int end )
+        private void SiftDown( SortingArray array, int start, int end )
         {
             int root = start;
 
@@ -39,11 +39,11 @@ namespace SortingVisualizer.Sorters
             {
                 int child = root * 2 + 1;
                 int swap = root;
-                if( collection[ swap ] < collection[ child ] )
+                if( array.CompareValuesAt( swap, child ) < 0 )
                 {
                     swap = child;
                 }
-                if( child + 1 <= end && collection[ swap ] < collection[ child + 1 ] )
+                if( child + 1 <= end && array.CompareValuesAt( swap, child + 1 ) < 0 )
                 {
                     swap = child + 1;
                 }
@@ -53,7 +53,7 @@ namespace SortingVisualizer.Sorters
                 }
                 else
                 {
-                    Swap( root, swap, collection );
+                    array.Swap( root, swap );
                     root = swap;
                 }
             }

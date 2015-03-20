@@ -8,14 +8,14 @@ namespace SortingVisualizer.Sorters
 {
     class InsertionSorter : Sorter
     {
-        public override void Sort( IList<int> collection )
+        public override void Sort( SortingArray array )
         {
-            for( int i = 1; i < collection.Count; i++ )
+            for( int i = 1; i < array.Length; i++ )
             {
                 int j = i;
-                while( j > 0 && collection[ j - 1 ] > collection[ j ] )
+                while( j > 0 && array.CompareValuesAt( j - 1, j ) > 0 )
                 {
-                    Swap( j, j - 1, collection );
+                    array.Swap( j, j - 1 );
                     j--;
                 }
             }

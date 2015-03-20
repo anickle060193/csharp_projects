@@ -8,12 +8,12 @@ namespace SortingVisualizer.Sorters
 {
     class InPlaceMSDRadixSorter : Sorter
     {
-        public override void Sort( IList<int> collection )
+        public override void Sort( SortingArray array )
         {
-            InPlaceMSDRadixSort( collection, 0, collection.Count, collection.Max().ToString().Length * 8 );
+            InPlaceMSDRadixSort( array, 0, array.Length, 64 );
         }
 
-        private void InPlaceMSDRadixSort( IList<int> collection, int start, int end, int bit )
+        private void InPlaceMSDRadixSort( SortingArray array, int start, int end, int bit )
         {
             if( bit == 0
              || ( end - start ) == 0 )
@@ -25,10 +25,10 @@ namespace SortingVisualizer.Sorters
             int bin1 = end;
             while( bin0 + 1 < bin1 )
             {
-                int bin = GetBit( collection[ bin0 + 1 ], bit );
+                int bin = GetBit( array[ bin0 + 1 ], bit );
                 if( bin == 1 )
                 {
-                    Swap( bin0 + 1, bin1 - 1, collection );
+                    array.Swap( bin0 + 1, bin1 - 1 );
                     bin1--;
                 }
                 else
@@ -36,13 +36,13 @@ namespace SortingVisualizer.Sorters
                     bin0++;
                 }
             }
-            InPlaceMSDRadixSort( collection, start, bin0 + 1, bit - 1 );
-            InPlaceMSDRadixSort( collection, bin1, end, bit - 1 );
+            InPlaceMSDRadixSort( array, start, bin0 + 1, bit - 1 );
+            InPlaceMSDRadixSort( array, bin1, end, bit - 1 );
         }
 
         private int GetBit( int number, int bit )
         {
-            return ( number & ( 1 << bit - 1 ) ) != 0 ? 1 : 0;
+            return ( number & ( 1L << ( bit - 1 ) ) ) != 0 ? 1 : 0;
         }
     }
 }

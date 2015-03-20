@@ -8,21 +8,21 @@ namespace SortingVisualizer.Sorters
 {
     class SelectionSorter : Sorter
     {
-        public override void Sort( IList<int> collection )
+        public override void Sort( SortingArray array )
         {
-            for( int i = 0; i < collection.Count; i++ )
+            for( int i = 0; i < array.Length; i++ )
             {
                 int minIndex = i;
-                for( int j = i + 1; j < collection.Count; j++ )
+                for( int j = i + 1; j < array.Length; j++ )
                 {
-                    if( collection[ j ] < collection[ minIndex ] )
+                    if( array.CompareValuesAt( j, minIndex ) < 0 )
                     {
                         minIndex = j;
                     }
                 }
                 if( minIndex != i )
                 {
-                    Swap( i, minIndex, collection );
+                    array.Swap( i, minIndex );
                 }
             }
         }

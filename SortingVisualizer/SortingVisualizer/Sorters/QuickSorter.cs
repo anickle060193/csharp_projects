@@ -8,36 +8,36 @@ namespace SortingVisualizer.Sorters
 {
     class QuickSorter : Sorter
     {
-        public override void Sort( IList<int> collection )
+        public override void Sort( SortingArray array )
         {
-            QuickSort( collection, 0, collection.Count - 1 );
+            QuickSort( array, 0, array.Length - 1 );
         }
 
-        private void QuickSort( IList<int> collection, int low, int high )
+        private void QuickSort( SortingArray array, int low, int high )
         {
             if( low < high )
             {
-                int storeIndex = Partition( collection, low, high );
-                QuickSort( collection, low, storeIndex - 1 );
-                QuickSort( collection, storeIndex + 1, high );
+                int storeIndex = Partition( array, low, high );
+                QuickSort( array, low, storeIndex - 1 );
+                QuickSort( array, storeIndex + 1, high );
             }
         }
 
-        private int Partition( IList<int> collection, int low, int high )
+        private int Partition( SortingArray array, int low, int high )
         {
             int pivotIndex = ( high + low ) / 2;
-            int pivotValue = collection[ pivotIndex ];
-            Swap( pivotIndex, high, collection );
+            int pivotValue = array[ pivotIndex ];
+            array.Swap( pivotIndex, high );
             int storeIndex = low;
             for( int i = low; i < high; i++ )
             {
-                if( collection[i] < pivotValue )
+                if( array.CompareValues( array[ i ], pivotValue ) < 0 )
                 {
-                    Swap( i, storeIndex, collection );
+                    array.Swap( i, storeIndex );
                     storeIndex++;
                 }
             }
-            Swap( storeIndex, high, collection );
+            array.Swap( storeIndex, high );
             return storeIndex;
         }
     }

@@ -9,17 +9,17 @@ namespace SortingVisualizer.Sorters
 {
     public class BubbleSorter : Sorter
     {
-        public override void Sort( IList<int> collection )
+        public override void Sort( SortingArray array )
         {
             bool changed;
             do
             {
                 changed = false;
-                for( int i = 0; i < collection.Count - 1; i++ )
+                for( int i = 0; i < array.Length - 1; i++ )
                 {
-                    if( collection[ i ] > collection[ i + 1 ] )
+                    if( array.CompareValuesAt( i, i + 1 ) > 0 )
                     {
-                        Swap( i + 1, i, collection );
+                        array.Swap( i + 1, i );
                         changed = true;
                     }
                 }

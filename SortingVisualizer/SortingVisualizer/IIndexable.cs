@@ -15,6 +15,13 @@ namespace SortingVisualizer
     public interface IIndexable<T> : IEnumerable<int>
     {
         // Summary:
+        //     Gets the number of elements contained in the System.Collections.Generic.ICollection<T>.
+        //
+        // Returns:
+        //     The number of elements contained in the System.Collections.Generic.ICollection<T>.
+        int Length { get; }
+
+        // Summary:
         //     Gets or sets the element at the specified index.
         //
         // Parameters:

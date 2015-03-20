@@ -8,16 +8,16 @@ namespace SortingVisualizer.Sorters
 {
     class BlockSorter : Sorter
     {
-        public override void Sort( IList<int> collection )
+        public override void Sort( SortingArray array )
         {
-            int powerOfTwo = FloorPowerOfTwo( collection.Count );
-            float scale = (float)collection.Count / powerOfTwo;
+            int powerOfTwo = FloorPowerOfTwo( array.Length );
+            float scale = (float)array.Length / powerOfTwo;
 
             for( int merge = 0; merge < powerOfTwo; merge += 16 )
             {
                 int start = (int)( merge * scale );
                 int end = (int)( ( merge + 16 ) * scale );
-                InsertionSort( collection, start, end );
+                InsertionSort( array, start, end );
             }
 
             for( int length = 16; length < powerOfTwo; length *= 2 )
@@ -27,35 +27,35 @@ namespace SortingVisualizer.Sorters
                     int start = (int)( merge * scale );
                     int mid = (int)( ( merge + length ) * scale );
                     int end = (int)( ( merge + length * 2 ) * scale );
-                    if( collection[ end - 1 ] < collection[ start ] )
+                    if( array.CompareValuesAt( end - 1, start ) < 0 )
                     {
-                        Rotate( collection, mid - start, start, end );
+                        Rotate( array, mid - start, start, end );
                     }
-                    else if( collection[mid - 1] > collection[mid] )
+                    else if( array.CompareValuesAt( mid - 1, mid ) > 0 )
                     {
-                        Merge( collection, start, mid - start, mid, end - mid );
+                        Merge( array, start, mid - start, mid, end - mid );
                     }
                 }
             }
         }
 
-        private void Reverse( IList<int> collection, int start, int end )
+        private void Reverse( SortingArray array, int start, int end )
         {
             int i = start;
             int j = end - 1;
             while( i < j )
             {
-                Swap( i, j, collection );
+                array.Swap( i, j );
                 i++;
                 j--;
             }
         }
 
-        private void Rotate( IList<int> collection, int amount, int start, int end )
+        private void Rotate( SortingArray array, int amount, int start, int end )
         {
-            Reverse( collection, start, end );
-            Reverse( collection, start, start + amount );
-            Reverse( collection, start + amount, end );
+            Reverse( array, start, end );
+            Reverse( array, start, start + amount );
+            Reverse( array, start + amount, end );
         }
 
         private int FloorPowerOfTwo( Int32 x )
@@ -68,48 +68,48 @@ namespace SortingVisualizer.Sorters
             return x - ( x >> 1 );
         }
 
-        private void InsertionSort( IList<int> collection, int start, int end )
+        private void InsertionSort( SortingArray array, int start, int end )
         {
             for( int i = start + 1; i < end; i++ )
             {
-                int x = collection[ i ];
+                int x = array[ i ];
                 int j = i;
-                while( j > start && collection[j - 1] > x )
+                while( j > start && array.CompareValues( array[ j - 1 ], x ) > 0 )
                 {
-                    collection[ j ] = collection[ j - 1 ];
+                    array[ j ] = array[ j - 1 ];
                     j--;
                 }
-                collection[ j ] = x;
+                array[ j ] = x;
             }
         }
 
-        private void BlockSwap( IList<int> collection, int start1, int start2, int length )
+        private void BlockSwap( SortingArray array, int start1, int start2, int length )
         {
             for( int i = 0; i < length; i++ )
             {
-                Swap( start1 + i, start2 + i, collection );
+                array.Swap( start1 + i, start2 + i );
             }
         }
 
-        private void Merge( IList<int> collection, int leftStart, int leftLength, int rightStart, int rightLength )
+        private void Merge( SortingArray array, int leftStart, int leftLength, int rightStart, int rightLength )
         {
             int leftIndex = leftStart;
             int rightIndex = rightStart;
             while( leftIndex < rightIndex && rightIndex < rightStart + rightLength )
             {
-                if( collection[ leftIndex ] < collection[ rightIndex ] )
+                if( array.CompareValuesAt( leftIndex, rightIndex ) < 0 )
                 {
                     leftIndex++;
                 }
                 else
                 {
-                    int temp = collection[ rightIndex ];
+                    int temp = array[ rightIndex ];
 
                     for( int i = rightIndex; i > leftIndex; i-- )
                     {
-                        Swap( i, i - 1, collection );
+                        array.Swap( i, i - 1 );
                     }
-                    collection[ leftIndex ] = temp;
+                    array[ leftIndex ] = temp;
                     leftIndex++;
                     rightIndex++;
                 }

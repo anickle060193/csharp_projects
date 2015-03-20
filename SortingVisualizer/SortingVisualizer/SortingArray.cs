@@ -7,50 +7,118 @@ using System.Threading.Tasks;
 
 namespace SortingVisualizer
 {
-    class SortingArray : IIndexable<int>
+    public class SortingArray : IIndexable<int>
     {
         private int[] _array;
         private int _modifications;
+        private int _editNumber;
 
         public int Reads { get; private set; }
         public int Writes { get; private set; }
         public int Comparisons { get; private set; }
         public bool RecordEdits { get; set; }
-        public int Count { get; private set; }
-        public bool IsReadOnly { get { return false; } }
         public List<SortEdit> History { get; private set; }
 
-        public SortingArray()
-        {
-            History = new List<SortEdit>();
-            _array = new int[ 10 ];
-        }
+        public int Length { get { return _array.Length; } }
 
-        public int CompareValues( int val1, int val2 )
+        public bool IsSorted
         {
-            Comparisons++;
-            return val1.CompareTo( val2 );
+            get
+            {
+                for( int i = 1; i < Length; i++ )
+                {
+                    if( _array[ i - 1 ] > _array[ i ] )
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
         }
 
         public int this[ int index ]
         {
             get
             {
-                Reads++;
+                if( RecordEdits )
+                {
+                    Reads++;
+                }
                 return _array[ index ];
             }
             set
             {
-                Writes++;
+                int oldValue = _array[ index ];
                 _array[ index ] = value;
                 _modifications++;
+                if( RecordEdits )
+                {
+                    Writes++;
+                    History.Add( CreateSortEdit( index, oldValue, value ) );
+                }
             }
+        }
+
+        public SortingArray( int size )
+        {
+            RecordEdits = true;
+            History = new List<SortEdit>();
+            _array = new int[ size ];
+        }
+
+        public SortingArray( int[] array ) : this( array.Length )
+        {
+            array.CopyTo( _array, 0 );
+        }
+
+        private SortEdit CreateSortEdit( int index, int oldValue, int newValue )
+        {
+            SortEdit e = new SortEdit();
+            e.EditNumber = _editNumber++;
+            e.Reads = Reads;
+            e.Writes = Writes;
+            e.Comparisons = Comparisons;
+            e.Index = index;
+            e.OldValue = oldValue;
+            e.NewValue = newValue;
+            return e;
+        }
+
+        public void ResetHistory()
+        {
+            RecordEdits = true;
+            Reads = 0;
+            Writes = 0;
+            Comparisons = 0;
+            History.Clear();
+            _editNumber = 0;
+        }
+
+        public int CompareValuesAt( int index1, int index2 )
+        {
+            return CompareValues( this[ index1 ], this[ index2 ] );
+        }
+
+        public void Swap( int index1, int index2 )
+        {
+            int temp = this[ index1 ];
+            this[ index1 ] = this[ index2 ];
+            this[ index2 ] = temp;
+        }
+
+        public int CompareValues( int val1, int val2 )
+        {
+            if( RecordEdits )
+            {
+                Comparisons++;
+            }
+            return val1.CompareTo( val2 );
         }
 
         public IEnumerator<int> GetEnumerator()
         {
             int mods = _modifications;
-            for( int i = 0; i < Count; i++ )
+            for( int i = 0; i < Length; i++ )
             {
                 if( mods != _modifications )
                 {
@@ -63,7 +131,7 @@ namespace SortingVisualizer
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             int mods = _modifications;
-            for( int i = 0; i < Count; i++ )
+            for( int i = 0; i < Length; i++ )
             {
                 if( mods != _modifications )
                 {

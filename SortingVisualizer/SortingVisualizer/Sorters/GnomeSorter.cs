@@ -8,18 +8,18 @@ namespace SortingVisualizer.Sorters
 {
     class GnomeSorter : Sorter
     {
-        public override void Sort( IList<int> collection )
+        public override void Sort( SortingArray array )
         {
             int index = 1;
-            while( index < collection.Count )
+            while( index < array.Length )
             {
-                if( collection[ index ] > collection[ index - 1 ] )
+                if( array.CompareValuesAt( index, index - 1 ) > 0 )
                 {
                     index++;
                 }
                 else
                 {
-                    Swap( index, index - 1, collection );
+                    array.Swap( index, index - 1 );
                     if( index > 1 )
                     {
                         index--;

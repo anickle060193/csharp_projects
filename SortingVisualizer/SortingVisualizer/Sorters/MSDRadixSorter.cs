@@ -8,12 +8,12 @@ namespace SortingVisualizer.Sorters
 {
     class MSDRadixSorter : Sorter
     {
-        public override void Sort( IList<int> collection )
+        public override void Sort( SortingArray array )
         {
-            MSDRadixSort( collection, 0, collection.Count, collection.Max().ToString().Length );
+            MSDRadixSort( array, 0, array.Length, array.Max().ToString().Length );
         }
 
-        private void MSDRadixSort( IList<int> collection, int start, int end, int digit )
+        private void MSDRadixSort( SortingArray array, int start, int end, int digit )
         {
             if( digit == 0 )
             {
@@ -35,8 +35,8 @@ namespace SortingVisualizer.Sorters
 
             for( int j = start; j < end; j++ )
             {
-                int bucket = GetDigit( collection[ j ], digit );
-                counter[ bucket ].AddLast( collection[ j ] );
+                int bucket = GetDigit( array[ j ], digit );
+                counter[ bucket ].AddLast( array[ j ] );
             }
             int pos = start;
             for( int j = 0; j < counter.Length; j++ )
@@ -44,11 +44,11 @@ namespace SortingVisualizer.Sorters
                 int newStart = pos;
                 while( counter[ j ].First != null )
                 {
-                    collection[ pos++ ] = counter[ j ].First.Value;
+                    array[ pos++ ] = counter[ j ].First.Value;
                     counter[ j ].RemoveFirst();
                 }
                 int newEnd = pos;
-                MSDRadixSort( collection, newStart, newEnd, digit - 1 );
+                MSDRadixSort( array, newStart, newEnd, digit - 1 );
             }
         }
 

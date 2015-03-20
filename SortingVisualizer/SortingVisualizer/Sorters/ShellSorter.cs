@@ -10,19 +10,19 @@ namespace SortingVisualizer.Sorters
     {
         private static readonly int[] GAPS = new int[] { 701, 301, 132, 57, 23, 10, 4, 1 };
 
-        public override void Sort( IList<int> collection )
+        public override void Sort( SortingArray array )
         {
             foreach( int gap in GAPS )
             {
-                for( int i = gap; i < collection.Count; i++ )
+                for( int i = gap; i < array.Length; i++ )
                 {
-                    int temp = collection[ i ];
+                    int temp = array[ i ];
                     int j;
-                    for( j = i; j >= gap && collection[ j - gap] > temp; j -= gap )
+                    for( j = i; j >= gap && array.CompareValues( array[ j - gap ], temp ) > 0; j -= gap )
                     {
-                        collection[ j ] = collection[ j - gap ];
+                        array[ j ] = array[ j - gap ];
                     }
-                    collection[ j ] = temp;
+                    array[ j ] = temp;
                 }
             }
         }

@@ -8,12 +8,12 @@ namespace SortingVisualizer.Sorters
 {
     class MergeSorter : Sorter
     {
-        public override void Sort( IList<int> collection )
+        public override void Sort( SortingArray array )
         {
-            MergeSort( 0, collection.Count, collection );
+            MergeSort( 0, array.Length, array );
         }
 
-        private void MergeSort( int start, int length, IList<int> collection )
+        private void MergeSort( int start, int length, SortingArray array )
         {
             if( length <= 1 )
             {
@@ -23,30 +23,30 @@ namespace SortingVisualizer.Sorters
             int leftLength = length / 2;
             int rightStart = leftStart + leftLength;
             int rightLength = length - leftLength;
-            MergeSort( leftStart, leftLength, collection );
-            MergeSort( rightStart, rightLength, collection );
-            Merge( leftStart, leftLength, rightStart, rightLength, collection );
+            MergeSort( leftStart, leftLength, array );
+            MergeSort( rightStart, rightLength, array );
+            Merge( leftStart, leftLength, rightStart, rightLength, array );
         }
 
-        private void Merge( int leftStart, int leftLength, int rightStart, int rightLength, IList<int> collection )
+        private void Merge( int leftStart, int leftLength, int rightStart, int rightLength, SortingArray array )
         {
             int leftIndex = leftStart;
             int rightIndex = rightStart;
             while( leftIndex < rightIndex && rightIndex < rightStart + rightLength )
             {
-                if( collection[ leftIndex ] < collection[ rightIndex ] )
+                if( array.CompareValuesAt( leftIndex, rightIndex ) < 0 )
                 {
                     leftIndex++;
                 }
                 else
                 {
-                    int temp = collection[ rightIndex ];
+                    int temp = array[ rightIndex ];
 
                     for( int i = rightIndex; i > leftIndex; i-- )
                     {
-                        Swap( i, i - 1, collection );
+                        array.Swap( i, i - 1 );
                     }
-                    collection[ leftIndex ] = temp;
+                    array[ leftIndex ] = temp;
                     leftIndex++;
                     rightIndex++;
                 }

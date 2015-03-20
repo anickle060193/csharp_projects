@@ -18,12 +18,12 @@ namespace SortingVisualizer.Sorters
             126491971, 204668309, 331160281, 535828591, 866988873
         };
 
-        public override void Sort( IList<int> collection )
+        public override void Sort( SortingArray array )
         {
-            //SmoothSort( collection, 0, collection.Count - 1 );
+            //SmoothSort( array, 0, array.Count - 1 );
         }
 
-        private void SmoothSort( IList<int> collection, int lo, int hi )
+        private void SmoothSort( SortingArray array, int lo, int hi )
         {
             int head = lo;
 
@@ -34,7 +34,7 @@ namespace SortingVisualizer.Sorters
             {
                 if( ( p & 3 ) == 3 )
                 {
-                    Sift( collection, pShift, head );
+                    Sift( array, pShift, head );
                     p = (int)( (uint)p >> 2 );
                     pShift += 2;
                 }
@@ -42,11 +42,11 @@ namespace SortingVisualizer.Sorters
                 {
                     if( LP[ pShift - 1 ] >= hi - head )
                     {
-                        Trinkle( collection, p, pShift, head, false );
+                        Trinkle( array, p, pShift, head, false );
                     }
                     else
                     {
-                        Sift( collection, pShift, head );
+                        Sift( array, pShift, head );
                     }
 
                     if( pShift == 1 )
@@ -64,7 +64,7 @@ namespace SortingVisualizer.Sorters
                 head++;
             }
 
-            Trinkle( collection, p, pShift, head, false );
+            Trinkle( array, p, pShift, head, false );
 
             while( pShift != 1 || p != 1 )
             {
@@ -80,52 +80,52 @@ namespace SortingVisualizer.Sorters
                     p ^= 7;
                     pShift -= 2;
 
-                    Trinkle( collection, (int)( (uint)p >> 1 ), pShift + 1, head - LP[ pShift ] - 1, true );
-                    Trinkle( collection, p, pShift, head - 1, true );
+                    Trinkle( array, (int)( (uint)p >> 1 ), pShift + 1, head - LP[ pShift ] - 1, true );
+                    Trinkle( array, p, pShift, head - 1, true );
                 }
 
                 head--;
             }
         }
 
-        private void Sift( IList<int> collection, int pShift, int head )
+        private void Sift( SortingArray array, int pShift, int head )
         {
-            int val = collection[ head ];
+            int val = array[ head ];
 
             while( pShift > 1 )
             {
                 int rt = head - 1;
                 int lf = head - 1 - LP[ pShift - 2 ];
 
-                if( val >= collection[ lf ]
-                 && val >= collection[ rt ] )
+                if( array.CompareValues( val, array[ lf ] ) >= 0
+                 && array.CompareValues( val, array[ rt ] ) >= 0 )
                 {
                     break;
                 }
-                if( collection[ lf ] >= collection[ rt ] )
+                if( array.CompareValuesAt( lf, rt ) >= 0 )
                 {
-                    collection[ head ] = collection[ lf ];
+                    array[ head ] = array[ lf ];
                     head = lf;
                     pShift -= 1;
                 }
                 else
                 {
-                    collection[ head ] = collection[ rt ];
+                    array[ head ] = array[ rt ];
                     head = rt;
                     pShift -= 2;
                 }
             }
 
-            collection[ head ] = val;
+            array[ head ] = val;
         }
 
-        private void Trinkle( IList<int> collection, int p, int pShift, int head, bool isTrusty )
+        private void Trinkle( SortingArray array, int p, int pShift, int head, bool isTrusty )
         {
-            int val = collection[ head ];
+            int val = array[ head ];
             while( p != 1 )
             {
                 int stepson = head - LP[ pShift ];
-                if( collection[ stepson ] <= val )
+                if( array.CompareValues( array[ stepson ], val ) <= 0 )
                 {
                     break;
                 }
@@ -133,14 +133,14 @@ namespace SortingVisualizer.Sorters
                 {
                     int rt = head - 1;
                     int lf = head - 1 - LP[ pShift - 2 ];
-                    if( collection[ rt ] >= collection[ stepson ]
-                     || collection[ lf ] >= collection[ stepson ] )
+                    if( array.CompareValuesAt( rt, stepson ) >= 0
+                     || array.CompareValuesAt( lf, stepson ) >= 0 )
                     {
                         break;
                     }
                 }
 
-                collection[ head ] = collection[ stepson ];
+                array[ head ] = array[ stepson ];
 
                 head = stepson;
                 int trail = TrailingZeros( p & ~1 );
@@ -151,8 +151,8 @@ namespace SortingVisualizer.Sorters
 
             if( !isTrusty )
             {
-                collection[ head ] = val;
-                Sift( collection, pShift, head );
+                array[ head ] = val;
+                Sift( array, pShift, head );
             }
         }
 

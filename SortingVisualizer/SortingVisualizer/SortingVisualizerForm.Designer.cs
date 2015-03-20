@@ -28,24 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            SortingVisualizer.Sorters.BubbleSorter bubbleSorter1 = new SortingVisualizer.Sorters.BubbleSorter();
-            this.uxSortingVisualizerControl = new SortingVisualizer.SortingVisualizerControl();
             this.SuspendLayout();
-            // 
-            // uxSortingVisualizerControl
-            // 
-            this.uxSortingVisualizerControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.uxSortingVisualizerControl.Location = new System.Drawing.Point(0, 0);
-            this.uxSortingVisualizerControl.Name = "uxSortingVisualizerControl";
-            this.uxSortingVisualizerControl.Size = new System.Drawing.Size(484, 311);
-            this.uxSortingVisualizerControl.TabIndex = 0;
             // 
             // SortingVisualizerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(484, 311);
-            this.Controls.Add(this.uxSortingVisualizerControl);
             this.MinimumSize = new System.Drawing.Size(500, 350);
             this.Name = "SortingVisualizerForm";
             this.Text = "Visual Sorting";
@@ -54,8 +43,6 @@
         }
 
         #endregion
-
-        private SortingVisualizerControl uxSortingVisualizerControl;
     }
 }
 
