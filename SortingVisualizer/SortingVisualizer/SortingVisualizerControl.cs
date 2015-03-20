@@ -24,7 +24,7 @@ namespace SortingVisualizer
         private MenuItem _currentMenuItem;
         private Sorter _sorter;
         private int[] _array;
-        private SortRecord[] _history;
+        private SortEdit[] _history;
         private int _currentRecord;
 
         public int MaxUpdates { get; private set; }

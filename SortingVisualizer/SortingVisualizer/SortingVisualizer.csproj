@@ -45,7 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SorterRecorder.cs" />
-    <Compile Include="SortRecord.cs" />
+    <Compile Include="SortingArray.cs" />
+    <Compile Include="SortEdit.cs" />
     <Compile Include="Sorter.cs" />
     <Compile Include="Sorters\BlockSorter.cs" />
     <Compile Include="Sorters\BubbleSort.cs" />

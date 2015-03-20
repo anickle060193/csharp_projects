@@ -6,13 +6,17 @@ using System.Threading.Tasks;
 
 namespace SortingVisualizer
 {
-    public class SortRecord
+    public class SortEdit
     {
         public int Index { get; set; }
         public int OldValue { get; set; }
         public int NewValue { get; set; }
 
-        public SortRecord( int index, int oldValue, int newValue )
+        public int Reads { get; set; }
+        public int Writes { get; set; }
+        public int Comparisons { get; set; }
+
+        public SortEdit( int index, int oldValue, int newValue )
         {
             Index = index;
             OldValue = oldValue;
