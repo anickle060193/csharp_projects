@@ -46,7 +46,7 @@ namespace SortingVisualizer
             InitializeComponent();
 
             this.ResizeRedraw = true;
-            _array = new int[ 1000 ];
+            _array = new int[ 1024 ];
             FillArray();
             UpdateInterval = 1;
             MaxUpdates = 250;
@@ -94,14 +94,7 @@ namespace SortingVisualizer
             };
             _worker.RunWorkerCompleted += (RunWorkerCompletedEventHandler)delegate( object sender, RunWorkerCompletedEventArgs e )
             {
-                if( e.Cancelled )
-                {
-                    StartSort();
-                }
-                else
-                {
-                    PlayHistory();
-                }
+                PlayHistory();
             };
 
             this.Disposed += (EventHandler)delegate( object sender, EventArgs e )
@@ -119,13 +112,16 @@ namespace SortingVisualizer
             MenuItem item = sender as MenuItem;
             if( item != null )
             {
-                Sorter sorter = item.Tag as Sorter;
-                if( sorter != null )
+                if( !item.Checked )
                 {
-                    _sorter = sorter;
-                    item.Checked = true;
-                    _currentMenuItem.Checked = false;
-                    _currentMenuItem = item;
+                    Sorter sorter = item.Tag as Sorter;
+                    if( sorter != null )
+                    {
+                        _sorter = sorter;
+                        item.Checked = true;
+                        _currentMenuItem.Checked = false;
+                        _currentMenuItem = item;
+                    }
                 }
             }
         }
@@ -177,10 +173,6 @@ namespace SortingVisualizer
                 FillArray();
                 RandomizeArray();
                 _worker.RunWorkerAsync();
-            }
-            else
-            {
-                _worker.CancelAsync();
             }
         }
 

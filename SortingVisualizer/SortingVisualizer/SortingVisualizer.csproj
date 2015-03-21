@@ -45,6 +45,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IIndexable.cs" />
+    <Compile Include="Sorters\BitonicSorter.cs" />
+    <Compile Include="Sorters\DualPivotQuickSorter.cs" />
+    <Compile Include="Sorters\FlashSorter.cs" />
+    <Compile Include="Sorters\SeveralUniqueSorter.cs" />
+    <Compile Include="Sorters\SiftSorter.cs" />
+    <Compile Include="Sorters\StoogeSorter.cs" />
+    <Compile Include="Sorters\ThreeWayQuickSorter.cs" />
     <Compile Include="SortingArray.cs" />
     <Compile Include="SortEdit.cs" />
     <Compile Include="Sorter.cs" />
