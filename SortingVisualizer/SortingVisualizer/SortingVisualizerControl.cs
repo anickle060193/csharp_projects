@@ -17,11 +17,13 @@ namespace SortingVisualizer
 {
     public partial class SortingVisualizerControl : UserControl
     {
-        private readonly Random _random = new Random();
         private static readonly Font _mainFont = new Font( "Courier", 72 );
         private static readonly SolidBrush _mainBrush = new SolidBrush( Color.FromArgb( 100, Color.Black ) );
         private static readonly Font _secondaryFont = new Font( "Courier", 20 );
         private static readonly SolidBrush _secondaryBrush = new SolidBrush( Color.FromArgb( 100, Color.Black ) );
+        
+        private readonly Random _random = new Random();
+        private readonly SolidBrush _barBrush = new SolidBrush( Color.White );
 
         private BackgroundWorker _worker;
         private MenuItem _currentMenuItem;
@@ -43,7 +45,7 @@ namespace SortingVisualizer
         {
             InitializeComponent();
 
-            ResizeRedraw = true;
+            this.ResizeRedraw = true;
             _array = new int[ 1000 ];
             FillArray();
             UpdateInterval = 1;
@@ -92,7 +94,23 @@ namespace SortingVisualizer
             };
             _worker.RunWorkerCompleted += (RunWorkerCompletedEventHandler)delegate( object sender, RunWorkerCompletedEventArgs e )
             {
-                PlayHistory();
+                if( e.Cancelled )
+                {
+                    StartSort();
+                }
+                else
+                {
+                    PlayHistory();
+                }
+            };
+
+            this.Disposed += (EventHandler)delegate( object sender, EventArgs e )
+            {
+                if( _historyEnumerator != null )
+                {
+                    _historyEnumerator.Dispose();
+                }
+                _barBrush.Dispose();
             };
         }
 
@@ -156,10 +174,13 @@ namespace SortingVisualizer
             {
                 uxUpdateTimer.Stop();
                 _currentEdit = null;
-                FillArrayReverse();
-                //FillArray();
-                //RandomizeArray();
+                FillArray();
+                RandomizeArray();
                 _worker.RunWorkerAsync();
+            }
+            else
+            {
+                _worker.CancelAsync();
             }
         }
 
@@ -175,7 +196,6 @@ namespace SortingVisualizer
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
                 float columnWidth = (float)this.Width / _array.Length;
                 float rowHeight = (float)this.Height / _array.Length;
-                SolidBrush b = new SolidBrush( Color.White );
                 for( int i = 0; i < _array.Length; i++ )
                 {
                     int value = _array[ i ];
@@ -183,8 +203,8 @@ namespace SortingVisualizer
                     float height = value * rowHeight;
                     float x = i * columnWidth;
                     float y = this.Height - height;
-                    b.Color = Utilities.ColorFromHSL( (double)( value - 1 ) / _array.Length, 0.5, 0.5 );
-                    e.Graphics.FillRectangle( b, x, y, width, height );
+                    _barBrush.Color = Utilities.ColorFromHSL( (double)( value - 1 ) / _array.Length, 0.5, 0.5 );
+                    e.Graphics.FillRectangle( _barBrush, x, y, width, height );
                 }
             }
             OutputNumbers( e.Graphics );
@@ -196,12 +216,14 @@ namespace SortingVisualizer
             int compares = 0;
             int reads = 0;
             int writes = 0;
+            long elapsedTime = 0;
             if( _currentEdit != null )
             {
                 modifications = _currentEdit.EditNumber;
                 compares = _currentEdit.Comparisons;
                 reads = _currentEdit.Reads;
                 writes = _currentEdit.Writes;
+                elapsedTime = _currentEdit.ElapsedTime;
             }
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
 
@@ -256,6 +278,13 @@ namespace SortingVisualizer
             x = ( this.Width - size.Width ) / 2.0f;
             y = ( this.Height - size.Height ) / 2.0f;
             g.DrawString( s, _mainFont, _mainBrush, x, y );
+
+            // Elapsed Time
+            s = "Elapsed Time: " + TimeSpan.FromTicks( elapsedTime ).ToString( @"ss\.ffff" );
+            size = g.MeasureString( s, _secondaryFont );
+            x = ( this.Width - size.Width ) / 2;
+            y = this.Height - size.Height - verticalPadding;
+            g.DrawString( s, _secondaryFont, _secondaryBrush, x, y );
         }
 
         private void uxUpdateTimer_Tick( object sender, EventArgs e )

@@ -18,6 +18,8 @@ namespace SortingVisualizer
         public int Writes { get; set; }
         public int Comparisons { get; set; }
 
+        public long ElapsedTime { get; set; }
+
         public void ApplyRecord( int[] array )
         {
             array[ Index ] = NewValue;

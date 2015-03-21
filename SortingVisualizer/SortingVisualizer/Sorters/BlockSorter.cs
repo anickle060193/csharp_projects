@@ -33,7 +33,7 @@ namespace SortingVisualizer.Sorters
                     }
                     else if( array.CompareValuesAt( mid - 1, mid ) > 0 )
                     {
-                        Merge( array, start, mid - start, mid, end - mid );
+                        Merge( start, mid, end, array );
                     }
                 }
             }
@@ -91,11 +91,11 @@ namespace SortingVisualizer.Sorters
             }
         }
 
-        private void Merge( SortingArray array, int leftStart, int leftLength, int rightStart, int rightLength )
+        private void Merge( int leftStart, int rightStart, int end, SortingArray array )
         {
             int leftIndex = leftStart;
             int rightIndex = rightStart;
-            while( leftIndex < rightIndex && rightIndex < rightStart + rightLength )
+            while( leftIndex < rightIndex && rightIndex < end )
             {
                 if( array.CompareValuesAt( leftIndex, rightIndex ) < 0 )
                 {

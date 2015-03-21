@@ -12,6 +12,7 @@ namespace SortingVisualizer
         private int[] _array;
         private int _modifications;
         private int _editNumber;
+        private DateTime _startTime;
 
         public int Reads { get; private set; }
         public int Writes { get; private set; }
@@ -81,6 +82,11 @@ namespace SortingVisualizer
             e.Index = index;
             e.OldValue = oldValue;
             e.NewValue = newValue;
+            if( History.Count == 0 )
+            {
+                _startTime = DateTime.Now;
+            }
+            e.ElapsedTime = ( DateTime.Now - _startTime ).Ticks;
             return e;
         }
 
@@ -92,6 +98,13 @@ namespace SortingVisualizer
             Comparisons = 0;
             History.Clear();
             _editNumber = 0;
+        }
+
+        public IEnumerator<SortEdit> Sort( Sorter sorter )
+        {
+            _startTime = DateTime.Now;
+            sorter.Sort( this );
+            return History.GetEnumerator();
         }
 
         public int CompareValuesAt( int index1, int index2 )

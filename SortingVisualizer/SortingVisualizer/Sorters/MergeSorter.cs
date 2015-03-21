@@ -25,14 +25,14 @@ namespace SortingVisualizer.Sorters
             int rightLength = length - leftLength;
             MergeSort( leftStart, leftLength, array );
             MergeSort( rightStart, rightLength, array );
-            Merge( leftStart, leftLength, rightStart, rightLength, array );
+            Merge( leftStart, rightStart, start + length, array );
         }
 
-        private void Merge( int leftStart, int leftLength, int rightStart, int rightLength, SortingArray array )
+        private void Merge( int leftStart, int rightStart, int end, SortingArray array )
         {
             int leftIndex = leftStart;
             int rightIndex = rightStart;
-            while( leftIndex < rightIndex && rightIndex < rightStart + rightLength )
+            while( leftIndex < rightIndex && rightIndex < end )
             {
                 if( array.CompareValuesAt( leftIndex, rightIndex ) < 0 )
                 {
