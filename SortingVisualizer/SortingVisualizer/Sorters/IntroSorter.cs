@@ -8,6 +8,8 @@ namespace SortingVisualizer.Sorters
 {
     class IntroSorter : Sorter
     {
+        public override bool IsWorking { get { return false; } }
+        
         private static readonly int SIZE_THRESHOLD = 16;
 
         public override void Sort( SortingArray array )

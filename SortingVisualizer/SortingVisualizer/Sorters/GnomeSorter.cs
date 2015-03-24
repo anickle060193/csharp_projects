@@ -8,6 +8,8 @@ namespace SortingVisualizer.Sorters
 {
     class GnomeSorter : Sorter
     {
+        public override bool IsWorking { get { return true; } }
+
         public override void Sort( SortingArray array )
         {
             int index = 1;

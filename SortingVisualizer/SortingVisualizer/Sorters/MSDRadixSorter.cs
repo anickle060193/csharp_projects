@@ -8,6 +8,8 @@ namespace SortingVisualizer.Sorters
 {
     class MSDRadixSorter : Sorter
     {
+        public override bool IsWorking { get { return true; } }
+
         public override void Sort( SortingArray array )
         {
             MSDRadixSort( array, 0, array.Length, array.Max().ToString().Length );

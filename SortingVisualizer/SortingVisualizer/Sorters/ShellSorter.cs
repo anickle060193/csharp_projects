@@ -10,6 +10,8 @@ namespace SortingVisualizer.Sorters
     {
         private static readonly int[] GAPS = new int[] { 701, 301, 132, 57, 23, 10, 4, 1 };
 
+        public override bool IsWorking { get { return true; } }
+
         public override void Sort( SortingArray array )
         {
             foreach( int gap in GAPS )

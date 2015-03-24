@@ -8,6 +8,8 @@ namespace SortingVisualizer.Sorters
 {
     class OddEvenSorter : Sorter
     {
+        public override bool IsWorking { get { return true; } }
+
         public override void Sort( SortingArray array )
         {
             bool sorted = false;

@@ -8,6 +8,8 @@ namespace SortingVisualizer.Sorters
 {
     class BlockSorter : Sorter
     {
+        public override bool IsWorking { get { return true; } }
+
         public override void Sort( SortingArray array )
         {
             int powerOfTwo = FloorPowerOfTwo( array.Length );

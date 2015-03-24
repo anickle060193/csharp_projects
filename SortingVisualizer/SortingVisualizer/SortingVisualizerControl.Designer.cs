@@ -43,7 +43,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.DoubleBuffered = true;
             this.Name = "SortingVisualizerControl";
-            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.SortingVisualizerControl_MouseUp);
             this.ResumeLayout(false);
 
         }

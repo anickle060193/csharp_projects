@@ -26,6 +26,10 @@ namespace SortingVisualizer
         {
             get
             {
+                if( _array == null )
+                {
+                    return true;
+                }
                 for( int i = 1; i < Length; i++ )
                 {
                     if( _array[ i - 1 ] > _array[ i ] )
@@ -60,16 +64,10 @@ namespace SortingVisualizer
             }
         }
 
-        public SortingArray( int size )
+        public SortingArray()
         {
             RecordEdits = true;
             History = new List<SortEdit>();
-            _array = new int[ size ];
-        }
-
-        public SortingArray( int[] array ) : this( array.Length )
-        {
-            array.CopyTo( _array, 0 );
         }
 
         private SortEdit CreateSortEdit( int index, int oldValue, int newValue )
@@ -90,7 +88,7 @@ namespace SortingVisualizer
             return e;
         }
 
-        public void ResetHistory()
+        private void ResetHistory()
         {
             RecordEdits = true;
             Reads = 0;
@@ -100,8 +98,10 @@ namespace SortingVisualizer
             _editNumber = 0;
         }
 
-        public IEnumerator<SortEdit> Sort( Sorter sorter )
+        public IEnumerator<SortEdit> Sort( Sorter sorter, int[] array )
         {
+            ResetHistory();
+            _array = (int[])array.Clone();
             _startTime = DateTime.Now;
             sorter.Sort( this );
             return History.GetEnumerator();

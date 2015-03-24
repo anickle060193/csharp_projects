@@ -8,6 +8,8 @@ namespace SortingVisualizer.Sorters
 {
     class SiftSorter : Sorter
     {
+        public override bool IsWorking { get { return false; } }
+
         public override void Sort( SortingArray array )
         {
             return;

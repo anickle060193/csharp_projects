@@ -8,6 +8,8 @@ namespace SortingVisualizer.Sorters
 {
     class LSDRadixSorter : Sorter
     {
+        public override bool IsWorking { get { return true; } }
+
         public override void Sort( SortingArray array )
         {
             LinkedList<int>[] counter = new LinkedList<int>[]

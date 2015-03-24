@@ -8,6 +8,8 @@ namespace SortingVisualizer.Sorters
 {
     class ThreeWayQuickSorter : Sorter
     {
+        public override bool IsWorking { get { return true; } }
+
         public override void Sort( SortingArray array )
         {
             ThreeWayQuickSort( array, 0, array.Length - 1 );

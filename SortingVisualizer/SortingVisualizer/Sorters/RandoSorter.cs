@@ -8,6 +8,8 @@ namespace SortingVisualizer.Sorters
 {
     class RandoSorter : Sorter
     {
+        public override bool IsWorking { get { return true; } }
+
         private Random R = new Random();
 
         public override void Sort( SortingArray array )

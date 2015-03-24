@@ -8,6 +8,8 @@ namespace SortingVisualizer.Sorters
 {
     class SmoothSorter : Sorter
     {
+        public override bool IsWorking { get { return false; } }
+
         private static readonly int[] LP =
         {
             1, 1, 3, 5, 9, 15, 25, 41, 67, 109, 177, 287,

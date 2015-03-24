@@ -17,6 +17,8 @@ namespace SortingVisualizer
 {
     public partial class SortingVisualizerControl : UserControl
     {
+        public enum UpdateMode { MaxUpdates, UpdatesPerTick }
+
         private static readonly Font _mainFont = new Font( "Courier", 72 );
         private static readonly SolidBrush _mainBrush = new SolidBrush( Color.FromArgb( 100, Color.Black ) );
         private static readonly Font _secondaryFont = new Font( "Courier", 20 );
@@ -25,19 +27,55 @@ namespace SortingVisualizer
         private readonly Random _random = new Random();
         private readonly SolidBrush _barBrush = new SolidBrush( Color.White );
 
-        private BackgroundWorker _worker;
+        private readonly BackgroundWorker _worker;
         private MenuItem _currentMenuItem;
         private Sorter _sorter;
         private int[] _array;
-        private int _updatesPerTick;
+        private SortingArray _sortingArray;
         private SortEdit _currentEdit;
         private IEnumerator<SortEdit> _historyEnumerator;
+        private bool _cancelled;
         private bool _displayReads;
         private bool _displayWrites;
         private bool _displayCompares;
         private bool _displayEditCount;
         private bool _displaySortName;
         private bool _displayElapsedTime;
+
+        public Sorter Sorter
+        {
+            get { return _sorter; }
+            set
+            {
+                _sorter = value;
+                StopSorting();
+                if( _currentMenuItem != null )
+                {
+                    _currentMenuItem.Checked = false;
+                }
+                foreach( MenuItem item in ContextMenu.MenuItems )
+                {
+                    if( item.Tag.Equals( _sorter ) )
+                    {
+                        _currentMenuItem = item;
+                        _currentMenuItem.Checked = true;
+                    }
+                }
+                Invalidate();
+            }
+        }
+
+        public int ArrayLength
+        {
+            get { return _array.Length; }
+            set
+            {
+                StopSorting();
+                _array = new int[ value ];
+                FillArray();
+                Invalidate();
+            }
+        }
 
         public bool DisplayReads
         {
@@ -99,7 +137,11 @@ namespace SortingVisualizer
             }
         }
 
-        public int MaxUpdates { get; private set; }
+        public UpdateMode EditUpdateMode { get; set; }
+
+        public int MaxUpdates { get; set; }
+
+        public int EditsPerTick { get; set; }
 
         public int UpdateInterval
         {
@@ -112,55 +154,52 @@ namespace SortingVisualizer
             InitializeComponent();
 
             this.ResizeRedraw = true;
-            _array = new int[ 1000 ];
-            FillArray();
+            ArrayLength = 100;
             UpdateInterval = 1;
             MaxUpdates = 250;
+            EditsPerTick = 10;
+            EditUpdateMode = UpdateMode.MaxUpdates;
 
-            Type[] sorterTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany( assembly => assembly.GetTypes() )
-                .Where( type => type.IsSubclassOf( typeof( Sorter ) ) )
-                .ToArray();
-            List<Sorter> sorters = new List<Sorter>();
-            foreach( Type sorterType in sorterTypes )
-            {
-                Sorter sorter = (Sorter)Activator.CreateInstance( sorterType );
-                sorters.Add( sorter );
-            }
-            sorters.Sort( ( s1, s2 ) => String.Compare( s1.ToString(), s2.ToString() ) );
-            _sorter = sorters[ 0 ];
+            _sortingArray = new SortingArray();
+
+            IList<Sorter> sorters = Sorter.GetSorters();
 
             ContextMenu = new ContextMenu();
             foreach( Sorter sorter in sorters )
             {
-                MenuItem item = new MenuItem();
-                item.Text = sorter.ToString();
-                item.Tag = sorter;
-                item.Click += ContextMenuItem_Click;
-                if( sorter.Equals( _sorter ) )
+                if( sorter.IsWorking )
                 {
-                    item.Checked = true;
-                    _currentMenuItem = item;
+                    MenuItem item = new MenuItem();
+                    item.Text = sorter.ToString();
+                    item.Tag = sorter;
+                    item.Click += ContextMenuItem_Click;
+                    ContextMenu.MenuItems.Add( item );
                 }
-                ContextMenu.MenuItems.Add( item );
             }
+
+            Sorter = sorters.First( s => s.IsWorking );
 
             _worker = new BackgroundWorker();
             _worker.DoWork += (DoWorkEventHandler)delegate( object sender, DoWorkEventArgs e )
             {
-                SortingArray a = new SortingArray( _array );
-                _sorter.Sort( a );
-                Debug.Assert( a.IsSorted, _sorter.ToString() + " did not properly sort the array." );
-                _updatesPerTick = Math.Max( 1, (int)( (float)a.History.Count / MaxUpdates ) );
+                _sortingArray.Sort( Sorter, _array );
+                Debug.Assert( _sortingArray.IsSorted, Sorter.ToString() + " did not properly sort the array." );
                 if( _historyEnumerator != null )
                 {
                     _historyEnumerator.Dispose();
                 }
-                _historyEnumerator = a.History.GetEnumerator();
+                _historyEnumerator = _sortingArray.History.GetEnumerator();
             };
             _worker.RunWorkerCompleted += (RunWorkerCompletedEventHandler)delegate( object sender, RunWorkerCompletedEventArgs e )
             {
-                PlayHistory();
+                if( !_cancelled )
+                {
+                    PlayHistory();
+                }
+                else
+                {
+                    _cancelled = false;
+                }
             };
 
             this.Disposed += (EventHandler)delegate( object sender, EventArgs e )
@@ -178,21 +217,11 @@ namespace SortingVisualizer
             MenuItem item = sender as MenuItem;
             if( item != null )
             {
-                if( !item.Checked )
-                {
-                    Sorter sorter = item.Tag as Sorter;
-                    if( sorter != null )
-                    {
-                        _sorter = sorter;
-                        item.Checked = true;
-                        _currentMenuItem.Checked = false;
-                        _currentMenuItem = item;
-                    }
-                }
+                Sorter = (Sorter)item.Tag;
             }
         }
 
-        public void FillArray()
+        private void FillArray()
         {
             for( int i = 0; i < _array.Length; i++ )
             {
@@ -201,7 +230,7 @@ namespace SortingVisualizer
             Invalidate();
         }
 
-        public void FillArrayReverse()
+        private void FillArrayReverse()
         {
             for( int i = 0; i < _array.Length; i++ )
             {
@@ -210,7 +239,7 @@ namespace SortingVisualizer
             Invalidate();
         }
 
-        public void FillArrayDuplicates()
+        private void FillArrayDuplicates()
         {
             for( int i = 0; i < _array.Length; i++ )
             {
@@ -218,7 +247,7 @@ namespace SortingVisualizer
             }
         }
 
-        public void RandomizeArray()
+        private void RandomizeArray()
         {
             for( int i = 0; i < _array.Length; i++ )
             {
@@ -234,6 +263,7 @@ namespace SortingVisualizer
         {
             if( !_worker.IsBusy )
             {
+                _cancelled = false;
                 uxUpdateTimer.Stop();
                 _currentEdit = null;
                 FillArray();
@@ -242,7 +272,13 @@ namespace SortingVisualizer
             }
         }
 
-        public void PlayHistory()
+        public void StopSorting()
+        {
+            _cancelled = true;
+            uxUpdateTimer.Stop();
+        }
+
+        private void PlayHistory()
         {
             uxUpdateTimer.Start();
         }
@@ -351,7 +387,7 @@ namespace SortingVisualizer
             if( DisplaySortName )
             {
                 // Sorter Name
-                s = _sorter.ToString();
+                s = Sorter.ToString();
                 size = g.MeasureString( s, _secondaryFont );
                 x = ( this.Width - size.Width ) / 2.0f;
                 y = ( this.Height - size.Height ) / 2.0f;
@@ -370,7 +406,16 @@ namespace SortingVisualizer
 
         private void uxUpdateTimer_Tick( object sender, EventArgs e )
         {
-            for( int i = 0; i < _updatesPerTick; i++ )
+            int updates;
+            if( EditUpdateMode == UpdateMode.MaxUpdates )
+            {
+                updates = Math.Max( 1, (int)( (float)_sortingArray.History.Count / MaxUpdates ) );
+            }
+            else
+            {
+                updates = EditsPerTick;
+            }
+            for( int i = 0; i < updates; i++ )
             {
                 if( _historyEnumerator.MoveNext() )
                 {
@@ -384,14 +429,6 @@ namespace SortingVisualizer
                 }
             }
             Invalidate();
-        }
-
-        private void SortingVisualizerControl_MouseUp( object sender, MouseEventArgs e )
-        {
-            if( e.Button == MouseButtons.Left )
-            {
-                StartSort();
-            }
         }
     }
 }

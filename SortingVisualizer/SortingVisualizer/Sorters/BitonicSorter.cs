@@ -9,6 +9,8 @@ namespace SortingVisualizer.Sorters
 {
     class BitonicSorter : Sorter
     {
+        public override bool IsWorking { get { return false; } }
+
         public override void Sort( SortingArray array )
         {
             BitonicSort( array, 0, array.Length, true );

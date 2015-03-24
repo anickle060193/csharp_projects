@@ -8,6 +8,8 @@ namespace SortingVisualizer.Sorters
 {
     class CycleSorter : Sorter
     {
+        public override bool IsWorking { get { return true; } }
+
         public override void Sort( SortingArray array )
         {
             for( int cycleStart = 0; cycleStart < array.Length; cycleStart++ )

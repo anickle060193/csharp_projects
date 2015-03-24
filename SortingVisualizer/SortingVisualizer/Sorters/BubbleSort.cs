@@ -9,6 +9,8 @@ namespace SortingVisualizer.Sorters
 {
     public class BubbleSorter : Sorter
     {
+        public override bool IsWorking { get { return true; } }
+
         public override void Sort( SortingArray array )
         {
             bool changed;

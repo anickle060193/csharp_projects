@@ -8,6 +8,8 @@ namespace SortingVisualizer.Sorters
 {
     class MergeSorter : Sorter
     {
+        public override bool IsWorking { get { return true; } }
+
         public override void Sort( SortingArray array )
         {
             MergeSort( 0, array.Length, array );

@@ -8,6 +8,8 @@ namespace SortingVisualizer.Sorters
 {
     class SelectionSorter : Sorter
     {
+        public override bool IsWorking { get { return true; } }
+
         public override void Sort( SortingArray array )
         {
             for( int i = 0; i < array.Length; i++ )
