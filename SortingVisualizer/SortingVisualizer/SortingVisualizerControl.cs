@@ -32,13 +32,79 @@ namespace SortingVisualizer
         private int _updatesPerTick;
         private SortEdit _currentEdit;
         private IEnumerator<SortEdit> _historyEnumerator;
+        private bool _displayReads;
+        private bool _displayWrites;
+        private bool _displayCompares;
+        private bool _displayEditCount;
+        private bool _displaySortName;
+        private bool _displayElapsedTime;
+
+        public bool DisplayReads
+        {
+            get { return _displayReads; }
+            set
+            {
+                _displayReads = value;
+                Invalidate();
+            }
+        }
+
+        public bool DisplayWrites
+        {
+            get { return _displayWrites; }
+            set
+            {
+                _displayWrites = value;
+                Invalidate();
+            }
+        }
+
+        public bool DisplayCompares
+        {
+            get { return _displayCompares; }
+            set
+            {
+                _displayCompares = value;
+                Invalidate();
+            }
+        }
+
+        public bool DisplayEditCount
+        {
+            get { return _displayEditCount; }
+            set
+            {
+                _displayEditCount = value;
+                Invalidate();
+            }
+        }
+
+        public bool DisplaySortName
+        {
+            get { return _displaySortName; }
+            set
+            {
+                _displaySortName = value;
+                Invalidate();
+            }
+        }
+
+        public bool DisplayElapsedTime
+        {
+            get { return _displayElapsedTime; }
+            set
+            {
+                _displayElapsedTime = value;
+                Invalidate();
+            }
+        }
 
         public int MaxUpdates { get; private set; }
 
         public int UpdateInterval
         {
             get { return uxUpdateTimer.Interval; }
-            private set { uxUpdateTimer.Interval = value; }
+            set { uxUpdateTimer.Interval = value; }
         }
 
         public SortingVisualizerControl()
@@ -46,7 +112,7 @@ namespace SortingVisualizer
             InitializeComponent();
 
             this.ResizeRedraw = true;
-            _array = new int[ 1024 ];
+            _array = new int[ 1000 ];
             FillArray();
             UpdateInterval = 1;
             MaxUpdates = 250;
@@ -61,7 +127,7 @@ namespace SortingVisualizer
                 Sorter sorter = (Sorter)Activator.CreateInstance( sorterType );
                 sorters.Add( sorter );
             }
-
+            sorters.Sort( ( s1, s2 ) => String.Compare( s1.ToString(), s2.ToString() ) );
             _sorter = sorters[ 0 ];
 
             ContextMenu = new ContextMenu();
@@ -85,7 +151,7 @@ namespace SortingVisualizer
                 SortingArray a = new SortingArray( _array );
                 _sorter.Sort( a );
                 Debug.Assert( a.IsSorted, _sorter.ToString() + " did not properly sort the array." );
-                _updatesPerTick = (int)( (float)a.History.Count / MaxUpdates );
+                _updatesPerTick = Math.Max( 1, (int)( (float)a.History.Count / MaxUpdates ) );
                 if( _historyEnumerator != null )
                 {
                     _historyEnumerator.Dispose();
@@ -199,10 +265,10 @@ namespace SortingVisualizer
                     e.Graphics.FillRectangle( _barBrush, x, y, width, height );
                 }
             }
-            OutputNumbers( e.Graphics );
+            OutputText( e.Graphics );
         }
 
-        private void OutputNumbers( Graphics g )
+        private void OutputText( Graphics g )
         {
             int modifications = 0;
             int compares = 0;
@@ -224,59 +290,82 @@ namespace SortingVisualizer
             float labelY = verticalPadding;
             float labelHeight = g.MeasureString( "Test Label", _secondaryFont ).Height;
             float textY = labelY + labelHeight;
-
-            // Comparisons Label
-            String s = "Comparisons";
-            SizeF size = g.MeasureString( s, _secondaryFont );
-            float x = horizontalPadding;
-            float y = labelY;
-            g.DrawString( s, _secondaryFont, _secondaryBrush, x, y );
-            // Comparisons Text
-            s = compares.ToString( "#,##0" );
-            size = g.MeasureString( s, _secondaryFont );
-            x = horizontalPadding;
-            y = textY;
-            g.DrawString( s, _secondaryFont, _secondaryBrush, x, y );
-
-            // Reads Label
-            s = "Reads";
-            size = g.MeasureString( s, _secondaryFont );
-            x = ( this.Width - size.Width ) / 2;
-            y = labelY;
-            g.DrawString( s, _secondaryFont, _secondaryBrush, x, y );
-            // Reads Text
-            s = reads.ToString( "#,##0" );
-            size = g.MeasureString( s, _secondaryFont );
-            x = ( this.Width - size.Width ) / 2;
-            y = textY;
-            g.DrawString( s, _secondaryFont, _secondaryBrush, x, y );
-
-            // Writes Label
-            s = "Writes";
-            size = g.MeasureString( s, _secondaryFont );
-            x = this.Width - size.Width - horizontalPadding;
-            y = labelY;
-            g.DrawString( s, _secondaryFont, _secondaryBrush, x, y );
-            // Writes Text
-            s = writes.ToString( "#,##0" );
-            size = g.MeasureString( s, _secondaryFont );
-            x = this.Width - size.Width - horizontalPadding;
-            y = textY;
-            g.DrawString( s, _secondaryFont, _secondaryBrush, x, y );
-
-            // Modifications
-            s = modifications.ToString( "#,##0" );
-            size = g.MeasureString( s, _mainFont );
-            x = ( this.Width - size.Width ) / 2.0f;
-            y = ( this.Height - size.Height ) / 2.0f;
-            g.DrawString( s, _mainFont, _mainBrush, x, y );
-
-            // Elapsed Time
-            s = "Elapsed Time: " + TimeSpan.FromTicks( elapsedTime ).ToString( @"ss\.ffff" );
-            size = g.MeasureString( s, _secondaryFont );
-            x = ( this.Width - size.Width ) / 2;
-            y = this.Height - size.Height - verticalPadding;
-            g.DrawString( s, _secondaryFont, _secondaryBrush, x, y );
+            String s;
+            SizeF size;
+            float x;
+            float y;
+            if( DisplayCompares )
+            {
+                // Comparisons Label
+                s = "Comparisons";
+                size = g.MeasureString( s, _secondaryFont );
+                x = horizontalPadding;
+                y = labelY;
+                g.DrawString( s, _secondaryFont, _secondaryBrush, x, y );
+                // Comparisons Text
+                s = compares.ToString( "#,##0" );
+                size = g.MeasureString( s, _secondaryFont );
+                x = horizontalPadding;
+                y = textY;
+                g.DrawString( s, _secondaryFont, _secondaryBrush, x, y );
+            }
+            if( DisplayReads )
+            {
+                // Reads Label
+                s = "Reads";
+                size = g.MeasureString( s, _secondaryFont );
+                x = ( this.Width - size.Width ) / 2;
+                y = labelY;
+                g.DrawString( s, _secondaryFont, _secondaryBrush, x, y );
+                // Reads Text
+                s = reads.ToString( "#,##0" );
+                size = g.MeasureString( s, _secondaryFont );
+                x = ( this.Width - size.Width ) / 2;
+                y = textY;
+                g.DrawString( s, _secondaryFont, _secondaryBrush, x, y );
+            }
+            if( DisplayWrites )
+            {
+                // Writes Label
+                s = "Writes";
+                size = g.MeasureString( s, _secondaryFont );
+                x = this.Width - size.Width - horizontalPadding;
+                y = labelY;
+                g.DrawString( s, _secondaryFont, _secondaryBrush, x, y );
+                // Writes Text
+                s = writes.ToString( "#,##0" );
+                size = g.MeasureString( s, _secondaryFont );
+                x = this.Width - size.Width - horizontalPadding;
+                y = textY;
+                g.DrawString( s, _secondaryFont, _secondaryBrush, x, y );
+            }
+            if( DisplayElapsedTime )
+            {
+                // Elapsed Time
+                s = "Elapsed Time: " + TimeSpan.FromTicks( elapsedTime ).ToString( @"ss\.ffff" );
+                size = g.MeasureString( s, _secondaryFont );
+                x = ( this.Width - size.Width ) / 2;
+                y = this.Height - size.Height - verticalPadding;
+                g.DrawString( s, _secondaryFont, _secondaryBrush, x, y );
+            }
+            if( DisplaySortName )
+            {
+                // Sorter Name
+                s = _sorter.ToString();
+                size = g.MeasureString( s, _secondaryFont );
+                x = ( this.Width - size.Width ) / 2.0f;
+                y = ( this.Height - size.Height ) / 2.0f;
+                g.DrawString( s, _secondaryFont, _secondaryBrush, x, y );
+            }
+            if( !DisplaySortName && DisplayEditCount )
+            {
+                // Modifications
+                s = modifications.ToString( "#,##0" );
+                size = g.MeasureString( s, _mainFont );
+                x = ( this.Width - size.Width ) / 2.0f;
+                y = ( this.Height - size.Height ) / 2.0f;
+                g.DrawString( s, _mainFont, _mainBrush, x, y );
+            }
         }
 
         private void uxUpdateTimer_Tick( object sender, EventArgs e )

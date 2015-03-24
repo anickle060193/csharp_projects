@@ -48,6 +48,8 @@
     <Compile Include="Sorters\BitonicSorter.cs" />
     <Compile Include="Sorters\DualPivotQuickSorter.cs" />
     <Compile Include="Sorters\FlashSorter.cs" />
+    <Compile Include="Sorters\IntroSorter.cs" />
+    <Compile Include="Sorters\RandoSorter.cs" />
     <Compile Include="Sorters\SeveralUniqueSorter.cs" />
     <Compile Include="Sorters\SiftSorter.cs" />
     <Compile Include="Sorters\StoogeSorter.cs" />

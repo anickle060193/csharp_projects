@@ -10,7 +10,7 @@ namespace SortingVisualizer.Sorters
     {
         public override void Sort( SortingArray array )
         {
-            throw new NotImplementedException();
+            
         }
 
         private void InsertionSort( SortingArray array )

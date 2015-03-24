@@ -10,6 +10,7 @@ namespace SortingVisualizer.Sorters
     {
         public override void Sort( SortingArray array )
         {
+            return;
             double mean = 0;
             for( int i = 0; i < array.Length; i++ )
             {
