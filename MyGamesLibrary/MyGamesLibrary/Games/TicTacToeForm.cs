@@ -62,12 +62,8 @@ namespace MyGamesLibrary
         public override void StartGame()
         {
             InitializeBoard();
-            this.Show();
-        }
 
-        public override void EndGame()
-        {
-            this.Hide();
+            base.StartGame();
         }
 
         private void InitializeBoard()
@@ -190,7 +186,7 @@ namespace MyGamesLibrary
             }
         }
 
-        private void EndGame( String message )
+        private void DisplayGameEnd( String message )
         {
             //uxText.Text = "Game Over.";
             DialogResult result = MessageBox.Show( message + " Play again?", message, MessageBoxButtons.YesNo );
@@ -229,13 +225,13 @@ namespace MyGamesLibrary
             // 5.
             if( MakePlay( row, col, HUMAN_PLAYER ) )
             {
-                EndGame( "You won!" );
+                DisplayGameEnd( "You won!" );
                 return;
             }
             
             if( _playsMade == TOTAL_CELLS )
             {
-                EndGame( "The game is a draw!" );
+                DisplayGameEnd( "The game is a draw!" );
                 return;
             }
 
@@ -246,14 +242,14 @@ namespace MyGamesLibrary
             // 7.
             if( MakePlay( computerPlayRow, computerPlayCol, COMPUTER_PLAYER ) )
             {
-                EndGame( "I win!" );
+                DisplayGameEnd( "I win!" );
                 return;
             }
 
             // 8.
             if( _playsMade == TOTAL_CELLS )
             {
-                EndGame( "The game is a draw!" );
+                DisplayGameEnd( "The game is a draw!" );
                 return;
             }
 

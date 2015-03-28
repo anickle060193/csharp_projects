@@ -23,11 +23,20 @@ namespace MyGamesLibrary
         private int[ , ] _board;
         private bool _gameOver;
 
+        public override string GameName { get { return "Sliding Puzzle"; } }
+
         public SlidingPuzzleForm()
         {
             InitializeComponent();
 
             InitializeBoard();
+        }
+
+        public override void StartGame()
+        {
+            InitializeBoard();
+
+            base.StartGame();
         }
 
         private void InitializeBoard()
@@ -178,22 +187,6 @@ namespace MyGamesLibrary
                     break;
                 }
             }
-        }
-
-        public override string GameName
-        {
-            get { return "Sliding Puzzle"; }
-        }
-
-        public override void StartGame()
-        {
-            InitializeBoard();
-            this.Show();
-        }
-
-        public override void EndGame()
-        {
-            this.Hide();
         }
     }
 }
