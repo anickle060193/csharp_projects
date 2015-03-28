@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace TicTacToe
+namespace MyGamesLibrary
 {
-    public partial class TicTacToeForm : Form
+    public partial class TicTacToeForm : GameForm
     {
         private const int ROWS = 3;
         private const int COLUMNS = 3;
@@ -50,11 +50,24 @@ namespace TicTacToe
         private int _playsMade;
         private int[ , ] _board;
 
+        public override string GameName { get { return "Tic-Tac-Toe"; } }
+
         public TicTacToeForm()
         {
             InitializeComponent();
 
             InitializeBoard();
+        }
+
+        public override void StartGame()
+        {
+            InitializeBoard();
+            this.Show();
+        }
+
+        public override void EndGame()
+        {
+            this.Hide();
         }
 
         private void InitializeBoard()

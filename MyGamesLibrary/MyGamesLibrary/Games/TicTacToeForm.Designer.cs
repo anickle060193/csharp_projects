@@ -1,4 +1,4 @@
-﻿namespace TicTacToe
+﻿namespace MyGamesLibrary
 {
     partial class TicTacToeForm
     {

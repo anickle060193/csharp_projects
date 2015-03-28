@@ -7,14 +7,12 @@ using System.Windows.Forms;
 
 namespace MyGamesLibrary
 {
-    public class GameForm : Form
+    public abstract class GameForm : Form
     {
         public virtual string GameName { get { return "Un-named Game"; } }
 
-        public virtual void StartGame()
-        {
-            this.Show();
-        }
+        public abstract void StartGame();
+        public abstract void EndGame();
 
         protected override void OnFormClosing( FormClosingEventArgs e )
         {

@@ -190,5 +190,10 @@ namespace MyGamesLibrary
             InitializeBoard();
             this.Show();
         }
+
+        public override void EndGame()
+        {
+            this.Hide();
+        }
     }
 }

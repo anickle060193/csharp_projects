@@ -33,6 +33,8 @@ namespace MyGamesLibrary
         private readonly Rectangle[] _padRects = new Rectangle[ PAD_COUNT ];
         private SimonSaysPad _downPad = InvalidPad;
 
+        public override string GameName { get { return "Simon Says"; } }
+
         public SimonSaysForm()
         {
             InitializeComponent();
@@ -53,7 +55,10 @@ namespace MyGamesLibrary
             _padRects[ (int)SimonSaysPad.Blue ] = new Rectangle( colTwoX, rowTwoY, padWidth, padHeight );
         }
 
-        public override string GameName { get { return "Simon Says"; } }
+        private void InitializeBoard()
+        {
+
+        }
 
         private bool IntersectsPad( Point p, Control pad )
         {
@@ -90,6 +95,17 @@ namespace MyGamesLibrary
                 //_pads[ (int)_downPad ].BackColor = PAD_COLORS[ (int)_downPad ][ BRIGHT_COLOR ];
                 _downPad = InvalidPad;
             }
+        }
+
+        public override void StartGame()
+        {
+            InitializeBoard();
+            this.Show();
+        }
+
+        public override void EndGame()
+        {
+            this.Hide();
         }
     }
 }

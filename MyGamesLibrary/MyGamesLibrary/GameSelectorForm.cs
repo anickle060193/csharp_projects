@@ -15,7 +15,8 @@ namespace MyGamesLibrary
         private static readonly List<GameForm> GAMES = new List<GameForm>()
         {
             new SlidingPuzzleForm(),
-            new SimonSaysForm()
+            new SimonSaysForm(),
+            new TicTacToeForm()
         };
         static GameSelectorForm()
         {
