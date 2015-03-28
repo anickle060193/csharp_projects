@@ -19,30 +19,52 @@ namespace SortingVisualizer
         public SortingVisualizerForm()
         {
             InitializeComponent();
-            /*
-            for( int r = 0; r < uxTableLayout.RowCount; r++ )
+            /*          
+            int ROWS = 4;
+            int COLUMNS = 4;
+            TableLayoutPanel t = new TableLayoutPanel()
             {
-                for( int c = 0; c < uxTableLayout.ColumnCount; c++ )
+                Dock = DockStyle.Fill
+            };
+            t.RowStyles.Clear();
+            t.ColumnStyles.Clear();
+            for( int i = 0; i < ROWS; i++ )
+            {
+                t.RowStyles.Add( new RowStyle( SizeType.Percent, 1.0f / ROWS ) );
+            }
+            t.RowCount = ROWS;
+            for( int i = 0; i < COLUMNS; i++ )
+            {
+                t.ColumnStyles.Add( new ColumnStyle( SizeType.Percent, 1.0f / COLUMNS ) );
+            }
+            t.ColumnCount = COLUMNS;
+            this.Controls.Add( t );
+            for( int r = 0; r < ROWS; r++ )
+            {
+                for( int c = 0; c < COLUMNS; c++ )
                 {
                     SortingVisualizerControl svc = CreateSortingVisualizerControl();
+                    svc.DisplayElapsedTime = true;
                     _sortingVisualizers.Add( svc );
-                    uxTableLayout.Controls.Add( svc, c, r );
+                    t.Controls.Add( svc, c, r );
                 }
             }
             */
+            
             this.Controls.Clear();
             SortingVisualizerControl svc = new SortingVisualizerControl()
             {
                 Dock = DockStyle.Fill,
-                ArrayLength = 100,
-                DisplayReads = true,
-                DisplayCompares = true,
+                ArrayLength = 10000,
+                DisplayReads = false,
+                DisplayCompares = false,
                 DisplayEditCount = false,
-                DisplayElapsedTime = true,
-                DisplaySortName = true,
-                DisplayWrites = true,
+                DisplayElapsedTime = false,
+                DisplaySortName = false,
+                DisplayWrites = false,
                 MaxUpdates = 250,
-                EditUpdateMode = SortingVisualizerControl.UpdateMode.MaxUpdates,
+                UpdateInterval = 1,
+                EditUpdateMode = SortingVisualizerControl.UpdateMode.MaxUpdates
             };
             svc.MouseUp += (MouseEventHandler)delegate( object sender, MouseEventArgs e )
             {
@@ -61,9 +83,9 @@ namespace SortingVisualizer
                 ArrayLength = 100,
                 DisplayReads = false,
                 DisplayCompares = false,
-                DisplayEditCount = false,
+                DisplayEditCount = true,
                 DisplayElapsedTime = false,
-                DisplaySortName = true,
+                DisplaySortName = false,
                 DisplayWrites = false,
                 EditsPerTick = 1,
                 EditUpdateMode = SortingVisualizerControl.UpdateMode.UpdatesPerTick

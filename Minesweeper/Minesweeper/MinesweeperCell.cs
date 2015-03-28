@@ -178,10 +178,10 @@ namespace Minesweeper
                     }
                 }
             }
-            if( Bomb )
-            {
-                g.DrawImage( Resources.HiddenBomb, X, Y );
-            }
+            //if( Bomb )
+            //{
+            //    g.DrawImage( Resources.HiddenBomb, X, Y );
+            //}
         }
     }
 }
