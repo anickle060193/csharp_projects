@@ -79,7 +79,7 @@ namespace MyGamesLibrary
             if( padColor != InvalidPad )
             {
                 _downPad = padColor;
-                _pads[ (int)_downPad ].BackColor = PAD_COLORS[ (int)padColor ][ DARK_COLOR ];
+                //[ (int)_downPad ].BackColor = PAD_COLORS[ (int)padColor ][ DARK_COLOR ];
             }
         }
 
@@ -87,7 +87,7 @@ namespace MyGamesLibrary
         {
             if( _downPad != InvalidPad )
             {
-                _pads[ (int)_downPad ].BackColor = PAD_COLORS[ (int)_downPad ][ BRIGHT_COLOR ];
+                //_pads[ (int)_downPad ].BackColor = PAD_COLORS[ (int)_downPad ][ BRIGHT_COLOR ];
                 _downPad = InvalidPad;
             }
         }
