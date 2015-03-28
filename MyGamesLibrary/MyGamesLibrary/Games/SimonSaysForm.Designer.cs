@@ -1,4 +1,4 @@
-﻿namespace MyGamesLibrary
+﻿namespace MyGamesLibrary.Games
 {
     partial class SimonSaysForm
     {
@@ -28,13 +28,26 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.uxStart = new System.Windows.Forms.Button();
             this.SuspendLayout();
+            // 
+            // uxStart
+            // 
+            this.uxStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uxStart.Location = new System.Drawing.Point(111, 111);
+            this.uxStart.Name = "uxStart";
+            this.uxStart.Size = new System.Drawing.Size(100, 100);
+            this.uxStart.TabIndex = 0;
+            this.uxStart.Text = "Start!";
+            this.uxStart.UseVisualStyleBackColor = true;
+            this.uxStart.Click += new System.EventHandler(this.uxStart_Click);
             // 
             // SimonSaysForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(322, 322);
+            this.Controls.Add(this.uxStart);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
             this.Name = "SimonSaysForm";
@@ -46,6 +59,8 @@
         }
 
         #endregion
+
+        private System.Windows.Forms.Button uxStart;
 
     }
 }

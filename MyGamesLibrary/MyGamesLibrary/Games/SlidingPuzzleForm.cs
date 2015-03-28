@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MyGamesLibrary
+namespace MyGamesLibrary.Games
 {
     public partial class SlidingPuzzleForm : GameForm
     {
@@ -32,11 +32,9 @@ namespace MyGamesLibrary
             InitializeBoard();
         }
 
-        public override void StartGame()
+        protected override void OnGameStarted( EventArgs e )
         {
             InitializeBoard();
-
-            base.StartGame();
         }
 
         private void InitializeBoard()

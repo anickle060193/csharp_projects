@@ -8,30 +8,41 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MyGamesLibrary
+namespace MyGamesLibrary.Games
 {
     public partial class SimonSaysForm : GameForm
     {
         enum SimonSaysPad { Green, Red, Yellow, Blue }
+        enum GameMode { UserPlay, SimonPlay, GameOver }
 
         private const float PaddingPercent = 0.02f;
 
+        private const int START_DELAY = 1200;
+        private const int PAD_DISPLAY_TIME = 800;
+        private const int PAD_DISPLAY_DELAY = 300;
+
         private const int PAD_COUNT = 4;
-        private const int BRIGHT_COLOR = 0;
-        private const int DARK_COLOR = 1;
+        private const int ACTIVE_COLOR = 0;
+        private const int NON_ACTIVE_COLOR = 1;
         private const SimonSaysPad InvalidPad = (SimonSaysPad)( -1 );
 
-        private static readonly Brush[][] PAD_BRUSHES = new Brush[][]
+        private static readonly Brush[][] PAD_BRUSHES = new Brush[PAD_COUNT][];
+        static SimonSaysForm()
         {
-            new Brush[] { Brushes.Red, Brushes.DarkRed },
-            new Brush[] { Brushes.Blue, Brushes.DarkBlue },
-            new Brush[] { Brushes.Yellow, Brushes.Orange },
-            new Brush[] { Brushes.Green, Brushes.DarkGreen }
-        };
+            //            ACTIVE            NON-ACTIVE
+            PAD_BRUSHES[ (int)SimonSaysPad.Red    ] = new Brush[] { Brushes.Red, Brushes.Pink };
+            PAD_BRUSHES[ (int)SimonSaysPad.Blue   ] = new Brush[] { Brushes.Blue, Brushes.LightBlue };
+            PAD_BRUSHES[ (int)SimonSaysPad.Yellow ] = new Brush[] { Brushes.Yellow, Brushes.PaleGoldenrod };
+            PAD_BRUSHES[ (int)SimonSaysPad.Green  ] = new Brush[] { Brushes.Green, Brushes.LightGreen };
+        }
 
-        private readonly bool[] _isDown = new bool[ PAD_COUNT ];
+        private readonly Random R = new Random();
         private readonly Rectangle[] _padRects = new Rectangle[ PAD_COUNT ];
-        private SimonSaysPad _downPad = InvalidPad;
+        private SimonSaysPad _activePad = InvalidPad;
+        private GameMode _currentMode = GameMode.SimonPlay;
+
+        private readonly List<SimonSaysPad> _instructions = new List<SimonSaysPad>();
+        private int _currentInstruction;
 
         public override string GameName { get { return "Simon Says"; } }
 
@@ -59,27 +70,26 @@ namespace MyGamesLibrary
             _padRects[ (int)SimonSaysPad.Blue ] = new Rectangle( colTwoX, rowTwoY, padWidth, padHeight );
         }
 
-        public override void StartGame()
+        protected override void OnGameStarted( EventArgs e )
         {
             InitializeBoard();
-
-            base.StartGame();
         }
 
         protected override void OnPaint( PaintEventArgs e )
         {
             foreach( SimonSaysPad pad in Enum.GetValues( typeof( SimonSaysPad ) ) )
             {
-                e.Graphics.FillRectangle( PAD_BRUSHES[ (int)pad ][ _isDown[ (int)pad ] ? DARK_COLOR : BRIGHT_COLOR ], _padRects[ (int)pad ] );
+                int brushSelect = _activePad == pad ? ACTIVE_COLOR : NON_ACTIVE_COLOR;
+                e.Graphics.FillRectangle( PAD_BRUSHES[ (int)pad ][ brushSelect ], _padRects[ (int)pad ] );
             }
         }
 
         private void InitializeBoard()
         {
-            for( int i = 0; i < PAD_COUNT; i++ )
-            {
-                _isDown[ i ] = false;
-            }
+            _activePad = InvalidPad;
+            _currentMode = GameMode.SimonPlay;
+            _instructions.Clear();
+            uxStart.Show();
             Invalidate();
         }
 
@@ -89,11 +99,11 @@ namespace MyGamesLibrary
                 && p.Y >= pad.Location.Y && p.Y <= pad.Location.Y + pad.Size.Height;
         }
 
-        private SimonSaysPad GetColorFromPoint( Point p )
+        private SimonSaysPad GetPadFromLocation( int x, int y )
         {
             foreach( SimonSaysPad pad in Enum.GetValues( typeof( SimonSaysPad ) ) )
             {
-                if( _padRects[ (int)pad ].Contains( p ) )
+                if( _padRects[ (int)pad ].Contains( x, y ) )
                 {
                     return pad;
                 }
@@ -103,23 +113,89 @@ namespace MyGamesLibrary
 
         private void SimonSaysForm_MouseDown( object sender, MouseEventArgs e )
         {
-            SimonSaysPad padColor = GetColorFromPoint( new Point( e.X, e.Y ) );
-            if( padColor != InvalidPad )
+            if( _currentMode == GameMode.UserPlay )
             {
-                _downPad = padColor;
-                _isDown[ (int)_downPad ] = true;
-                Invalidate();
+                SimonSaysPad padColor = GetPadFromLocation( e.X, e.Y );
+                if( padColor != InvalidPad )
+                {
+                    _activePad = padColor;
+                    Refresh();
+                }
             }
         }
 
         private void SimonSaysForm_MouseUp( object sender, MouseEventArgs e )
         {
-            if( _downPad != InvalidPad )
+            if( _currentMode == GameMode.UserPlay )
             {
-                _isDown[ (int)_downPad ] = false;
-                _downPad = InvalidPad;
-                Invalidate();
+                SimonSaysPad pad = GetPadFromLocation( e.X, e.Y );
+                if( pad != InvalidPad )
+                {
+                    UserPlay( pad );
+                }
             }
+        }
+
+        private void UserPlay( SimonSaysPad pad )
+        {
+            _activePad = InvalidPad;
+            Refresh();
+            if( pad != _instructions[ _currentInstruction] )
+            {
+                DisplayEndGame();
+            }
+            else
+            {
+                _currentInstruction++;
+                if( _currentInstruction == _instructions.Count)
+                {
+                    _currentMode = GameMode.SimonPlay;
+                    StartNextRound();
+                }
+            }
+        }
+
+        private async void StartNextRound()
+        {
+            await Task.Delay( START_DELAY );
+            SimonSaysPad nextPad = (SimonSaysPad)R.Next( PAD_COUNT );
+            _instructions.Add( nextPad );
+            DisplayInstructions();
+        }
+
+        private async void DisplayInstructions()
+        {
+            foreach( SimonSaysPad pad in _instructions )
+            {
+                _activePad = pad;
+                Refresh();
+                await Task.Delay( PAD_DISPLAY_TIME );
+                _activePad = InvalidPad;
+                Refresh();
+                await Task.Delay( PAD_DISPLAY_DELAY );
+            }
+            _currentInstruction = 0;
+            _currentMode = GameMode.UserPlay;
+        }
+
+        private void DisplayEndGame()
+        {
+            _currentMode = GameMode.GameOver;
+            if( MessageBox.Show( "You lasted " + ( _instructions.Count - 1 ) + " steps. Play again?", "Game Over", MessageBoxButtons.YesNo ) == DialogResult.Yes )
+            {
+                this.StartGame();
+            }
+            else
+            {
+                this.EndGame();
+            }
+        }
+
+        private void uxStart_Click( object sender, EventArgs e )
+        {
+            uxStart.Hide();
+
+            StartNextRound();
         }
     }
 }

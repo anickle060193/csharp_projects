@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyGamesLibrary.Games;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,7 +17,8 @@ namespace MyGamesLibrary
         {
             new SlidingPuzzleForm(),
             new SimonSaysForm(),
-            new TicTacToeForm()
+            new TicTacToeForm(),
+            new FloodItForm()
         };
         static GameSelectorForm()
         {
@@ -29,15 +31,32 @@ namespace MyGamesLibrary
 
             foreach( GameForm game in GAMES )
             {
-                uxGameList.Items.Add( game.GameName );
+                game.GameEnded += Game_GameEnded;
+                uxGamesList.Items.Add( game.GameName );
             }
+        }
+
+        private void Game_GameEnded( object sender, EventArgs e )
+        {
+            this.Show();
         }
 
         private void uxPlayGame_Click( object sender, EventArgs e )
         {
-            if( uxGameList.SelectedIndex >= 0 )
+            StartGame( uxGamesList.SelectedIndex );
+        }
+
+        private void uxGamesList_DoubleClick( object sender, EventArgs e )
+        {
+            StartGame( uxGamesList.SelectedIndex );
+        }
+
+        private void StartGame( int i )
+        {
+            if( 0 <= i && i <= GAMES.Count )
             {
-                GAMES[ uxGameList.SelectedIndex ].StartGame();
+                this.Hide();
+                GAMES[ i ].StartGame();
             }
         }
     }

@@ -53,6 +53,12 @@
     <Compile Include="GameSelectorForm.Designer.cs">
       <DependentUpon>GameSelectorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Games\FloodItForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Games\FloodItForm.Designer.cs">
+      <DependentUpon>FloodItForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Games\TicTacToeForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,6 +81,9 @@
     </Compile>
     <EmbeddedResource Include="GameSelectorForm.resx">
       <DependentUpon>GameSelectorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Games\FloodItForm.resx">
+      <DependentUpon>FloodItForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Games\TicTacToeForm.resx">
       <DependentUpon>TicTacToeForm.cs</DependentUpon>

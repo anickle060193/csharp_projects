@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MyGamesLibrary
+namespace MyGamesLibrary.Games
 {
     public partial class TicTacToeForm : GameForm
     {
@@ -59,11 +59,9 @@ namespace MyGamesLibrary
             InitializeBoard();
         }
 
-        public override void StartGame()
+        protected override void OnGameStarted( EventArgs e )
         {
             InitializeBoard();
-
-            base.StartGame();
         }
 
         private void InitializeBoard()
@@ -100,7 +98,6 @@ namespace MyGamesLibrary
 
         private int LengthOfPiecesSegment( int row, int col, int vInc, int hInc, int player )
         {
-            // Beautiful :D
             int sequence = 0;
             while( 0 <= row && row < ROWS
                 && 0 <= col && col < COLUMNS
@@ -188,21 +185,19 @@ namespace MyGamesLibrary
 
         private void DisplayGameEnd( String message )
         {
-            //uxText.Text = "Game Over.";
             DialogResult result = MessageBox.Show( message + " Play again?", message, MessageBoxButtons.YesNo );
             if( result == DialogResult.Yes )
             {
-                InitializeBoard();
+                StartGame();
             }
             else
             {
-                Application.Exit();
+                EndGame();
             }
         }
 
         private void ProcessPlay( int row, int col )
         {
-            // 1.
             for( int r = 0; r < ROWS; r++ )
             {
                 for( int c = 0; c < COLUMNS; c++ )
@@ -211,18 +206,13 @@ namespace MyGamesLibrary
                 }
             }
 
-            // 2.
             _buttons[ row, col ].Text = PLAYER_REPRESENTATION[ HUMAN_PLAYER ];
-            //uxText.Text = "My move.";
 
-            // 3.
             this.Update();
 
-            // 4.
             int computerPlayRow, computerPlayCol;
             EvaluatePlay( row, col, HUMAN_PLAYER, out computerPlayRow, out computerPlayCol );
 
-            // 5.
             if( MakePlay( row, col, HUMAN_PLAYER ) )
             {
                 DisplayGameEnd( "You won!" );
@@ -235,25 +225,20 @@ namespace MyGamesLibrary
                 return;
             }
 
-            // 6.
             _buttons[ computerPlayRow, computerPlayCol ].Text = PLAYER_REPRESENTATION[ COMPUTER_PLAYER ];
-            //uxText.Text = "Your move.";
 
-            // 7.
             if( MakePlay( computerPlayRow, computerPlayCol, COMPUTER_PLAYER ) )
             {
                 DisplayGameEnd( "I win!" );
                 return;
             }
 
-            // 8.
             if( _playsMade == TOTAL_CELLS )
             {
                 DisplayGameEnd( "The game is a draw!" );
                 return;
             }
 
-            // 9.
             for( int r = 0; r < ROWS; r++ )
             {
                 for( int c = 0; c < COLUMNS; c++ )

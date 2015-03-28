@@ -9,16 +9,39 @@ namespace MyGamesLibrary
 {
     public class GameForm : Form
     {
+        public event EventHandler GameStarted;
+        public event EventHandler GameEnded;
+
         public virtual string GameName { get { return "Un-named Game"; } }
 
-        public virtual void StartGame()
+        public void StartGame()
         {
             this.Show();
+
+            if( GameStarted != null )
+            {
+                GameStarted( this, EventArgs.Empty );
+            }
+            OnGameStarted( EventArgs.Empty );
         }
 
-        public virtual void EndGame()
+        public void EndGame()
         {
             this.Hide();
+
+            if( GameEnded != null )
+            {
+                GameEnded( this, EventArgs.Empty );
+            }
+            OnGameEnded( EventArgs.Empty );
+        }
+
+        protected virtual void OnGameStarted( EventArgs e )
+        {
+        }
+
+        protected virtual void OnGameEnded( EventArgs e )
+        {
         }
 
         protected override void OnFormClosing( FormClosingEventArgs e )
@@ -26,7 +49,7 @@ namespace MyGamesLibrary
             if( e.CloseReason == CloseReason.UserClosing )
             {
                 e.Cancel = true;
-                this.Hide();
+                EndGame();
             }
             else
             {
