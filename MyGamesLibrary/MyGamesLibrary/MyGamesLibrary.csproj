@@ -59,6 +59,12 @@
     <Compile Include="Games\FloodItForm.Designer.cs">
       <DependentUpon>FloodItForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Games\ReversiForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Games\ReversiForm.Designer.cs">
+      <DependentUpon>ReversiForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Games\TicTacToeForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,6 +90,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Games\FloodItForm.resx">
       <DependentUpon>FloodItForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Games\ReversiForm.resx">
+      <DependentUpon>ReversiForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Games\TicTacToeForm.resx">
       <DependentUpon>TicTacToeForm.cs</DependentUpon>

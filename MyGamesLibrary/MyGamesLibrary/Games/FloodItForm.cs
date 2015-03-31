@@ -40,7 +40,6 @@ namespace MyGamesLibrary.Games
         private Button[] _colorButtons;
         private bool _gameOver;
         private int _floodsRemaining;
-        private bool _aiPlaying;
 
         public override string GameName { get { return "Flood It"; } }
 

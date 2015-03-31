@@ -18,7 +18,8 @@ namespace MyGamesLibrary
             new SlidingPuzzleForm(),
             new SimonSaysForm(),
             new TicTacToeForm(),
-            new FloodItForm()
+            new FloodItForm(),
+            new ReversiForm()
         };
         static GameSelectorForm()
         {
