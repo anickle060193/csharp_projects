@@ -237,7 +237,43 @@ namespace MyGamesLibrary.Games
                 _plays++;
                 if( GameOver())
                 {
-                    MessageBox.Show( "Game Over!" );
+                    int black = 0;
+                    int white = 0;
+                    for( int r = 0; r < Rows; r++ )
+                    {
+                        for( int c = 0; c < Columns; c++ )
+                        {
+                            if( _board[ r, c] == Piece.Black )
+                            {
+                                black++;
+                            }
+                            else if( _board[ r, c] == Piece.White )
+                            {
+                                white++;
+                            }
+                        }
+                    }
+                    string message;
+                    if( black > white )
+                    {
+                        message = "Black wins!";
+                    }
+                    else if( black < white )
+                    {
+                        message = "White wins!";
+                    }
+                    else
+                    {
+                        message = "Draw!";
+                    }
+                    if( MessageBox.Show( message + " Do you want to play again?", "Game Over", MessageBoxButtons.YesNo ) == DialogResult.Yes )
+                    {
+                        StartGame();
+                    }
+                    else
+                    {
+                        EndGame();
+                    }
                 }
             }
         }
