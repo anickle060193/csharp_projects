@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Direction.cs" />
     <Compile Include="GameForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -59,11 +60,29 @@
     <Compile Include="Games\FloodItForm.Designer.cs">
       <DependentUpon>FloodItForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Games\PickUpSticks.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Games\PickUpSticks.Designer.cs">
+      <DependentUpon>PickUpSticks.cs</DependentUpon>
+    </Compile>
     <Compile Include="Games\ReversiForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Games\ReversiForm.Designer.cs">
       <DependentUpon>ReversiForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Games\SnakeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Games\SnakeForm.Designer.cs">
+      <DependentUpon>SnakeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Games\TextTwistForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Games\TextTwistForm.Designer.cs">
+      <DependentUpon>TextTwistForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Games\TicTacToeForm.cs">
       <SubType>Form</SubType>
@@ -71,6 +90,9 @@
     <Compile Include="Games\TicTacToeForm.Designer.cs">
       <DependentUpon>TicTacToeForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Location.cs" />
+    <Compile Include="Other\TrieTree.cs" />
+    <Compile Include="Other\WordDictionary.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Games\SimonSaysForm.cs">
@@ -85,14 +107,24 @@
     <Compile Include="Games\SlidingPuzzleForm.Designer.cs">
       <DependentUpon>SlidingPuzzleForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utilities.cs" />
     <EmbeddedResource Include="GameSelectorForm.resx">
       <DependentUpon>GameSelectorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Games\FloodItForm.resx">
       <DependentUpon>FloodItForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Games\PickUpSticks.resx">
+      <DependentUpon>PickUpSticks.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Games\ReversiForm.resx">
       <DependentUpon>ReversiForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Games\SnakeForm.resx">
+      <DependentUpon>SnakeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Games\TextTwistForm.resx">
+      <DependentUpon>TextTwistForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Games\TicTacToeForm.resx">
       <DependentUpon>TicTacToeForm.cs</DependentUpon>
@@ -105,6 +137,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Games\SimonSaysForm.resx">
       <DependentUpon>SimonSaysForm.cs</DependentUpon>
@@ -124,6 +157,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TextTwistWords.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

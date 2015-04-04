@@ -34,9 +34,10 @@
             // 
             // uxPlayGame
             // 
-            this.uxPlayGame.Location = new System.Drawing.Point(12, 191);
+            this.uxPlayGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uxPlayGame.Location = new System.Drawing.Point(12, 254);
             this.uxPlayGame.Name = "uxPlayGame";
-            this.uxPlayGame.Size = new System.Drawing.Size(212, 23);
+            this.uxPlayGame.Size = new System.Drawing.Size(250, 50);
             this.uxPlayGame.TabIndex = 2;
             this.uxPlayGame.Text = "Play Game!";
             this.uxPlayGame.UseVisualStyleBackColor = true;
@@ -44,10 +45,12 @@
             // 
             // uxGamesList
             // 
+            this.uxGamesList.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.uxGamesList.FormattingEnabled = true;
+            this.uxGamesList.ItemHeight = 29;
             this.uxGamesList.Location = new System.Drawing.Point(12, 12);
             this.uxGamesList.Name = "uxGamesList";
-            this.uxGamesList.Size = new System.Drawing.Size(212, 173);
+            this.uxGamesList.Size = new System.Drawing.Size(250, 236);
             this.uxGamesList.TabIndex = 3;
             this.uxGamesList.DoubleClick += new System.EventHandler(this.uxGamesList_DoubleClick);
             // 
@@ -55,7 +58,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(236, 222);
+            this.ClientSize = new System.Drawing.Size(274, 316);
             this.Controls.Add(this.uxGamesList);
             this.Controls.Add(this.uxPlayGame);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
