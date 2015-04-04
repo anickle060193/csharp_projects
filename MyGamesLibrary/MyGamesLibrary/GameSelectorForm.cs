@@ -19,12 +19,11 @@ namespace MyGamesLibrary
             new SimonSaysForm(),
             new TicTacToeForm(),
             new FloodItForm(),
-            new ReversiForm()
+            new ReversiForm(),
+            new PickUpSticks(),
+            new SnakeForm(),
+            new TextTwistForm()
         };
-        static GameSelectorForm()
-        {
-            GAMES.ToList().Sort( ( x, y ) => x.GameName.CompareTo( y.GameName ) );
-        }
 
         public GameSelectorForm()
         {
