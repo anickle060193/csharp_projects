@@ -61,6 +61,99 @@ namespace MyGamesLibrary.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 
+        ///
+        ///
+        ///
+        ///
+        ///
+        ///
+        ///
+        ///
+        ///
+        ///.,m
+        ///.,m
+        ///.,mn
+        ///.,mn
+        ///.,mnb
+        ///.,mnb
+        ////.,
+        ////.,
+        ////.,m
+        ////.,m
+        ////.,mn
+        ////.,mn
+        ////.,mnb
+        ////.,mnb
+        ////dev/null
+        ////dev/null
+        ////etc/passwd
+        ////etc/passwd
+        ////usr/group
+        ////usr/group
+        ///0
+        ///0
+        ///00
+        ///00
+        ///000
+        ///000
+        ///0000
+        ///0000
+        ///00000
+        ///00000
+        ///000000
+        ///000000
+        ///0000000
+        ///0000000
+        ///00000000
+        ///00000000
+        ///1
+        ///1
+        ///10
+        ///10
+        ///100
+        ///100
+        ///1029
+        ///1029
+        ///10293
+        ///10293
+        ///102938
+        ///102938
+        ///11
+        ///11
+        ///111
+        ///111
+        ///1111
+        ///1111
+        ///11111
+        ///11111
+        ///111111
+        ///111111
+        ///1111111
+        ///1111111
+        ///11111111
+        ///11111111
+        ///12
+        ///12
+        ///1209
+        ///1209
+        ///123
+        ///123
+        ///123098
+        ///123098
+        ///1234
+        ///1234
+        ///12345
+        ///12345
+        ///12 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string AllWords {
+            get {
+                return ResourceManager.GetString("AllWords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AAA
         ///AAAS
         ///AARHUS
@@ -138,6 +231,160 @@ namespace MyGamesLibrary.Properties {
         internal static string TextTwistWords {
             get {
                 return ResourceManager.GetString("TextTwistWords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to aa
+        ///aal
+        ///aalii
+        ///aam
+        ///aani
+        ///aardvark
+        ///aardwolf
+        ///aaronic
+        ///aaronical
+        ///aaronite
+        ///aaronitic
+        ///aaru
+        ///ab
+        ///ababdeh
+        ///ababua
+        ///abac
+        ///abaca
+        ///abacate
+        ///abacay
+        ///abacinate
+        ///abacination
+        ///abaciscus
+        ///abacist
+        ///abactinal
+        ///abactinally
+        ///abaction
+        ///abactor
+        ///abaculus
+        ///abadite
+        ///abaff
+        ///abaft
+        ///abaisance
+        ///abaiser
+        ///abaissed
+        ///abalienate
+        ///abalienation
+        ///abama
+        ///abampere
+        ///abandonable
+        ///abandoned
+        ///abandonedly
+        ///abandonee
+        ///abandoner
+        ///abandonment
+        ///abanic
+        ///abantes
+        ///abaptiston
+        ///abarambo
+        ///abaris
+        ///abarthrosis
+        ///abarticular
+        ///abarticulation
+        ///abas
+        ///abased
+        ///abasedly
+        ///abasedness
+        ///abasement
+        ///abaser
+        ///abasgi
+        ///abashed
+        ///a [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string UnabrigedDictionary {
+            get {
+                return ResourceManager.GetString("UnabrigedDictionary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 10th
+        ///1st
+        ///2nd
+        ///3rd
+        ///4th
+        ///5th
+        ///6th
+        ///7th
+        ///8th
+        ///9th
+        ///a
+        ///a&amp;m
+        ///a&amp;p
+        ///a&apos;s
+        ///aaa
+        ///aaas
+        ///aarhus
+        ///aaron
+        ///aau
+        ///aba
+        ///ababa
+        ///aback
+        ///abacus
+        ///abalone
+        ///abandon
+        ///abase
+        ///abash
+        ///abate
+        ///abater
+        ///abbas
+        ///abbe
+        ///abbey
+        ///abbot
+        ///abbott
+        ///abbreviate
+        ///abc
+        ///abdicate
+        ///abdomen
+        ///abdominal
+        ///abduct
+        ///abe
+        ///abed
+        ///abel
+        ///abelian
+        ///abelson
+        ///aberdeen
+        ///abernathy
+        ///aberrant
+        ///aberrate
+        ///abet
+        ///abetted
+        ///abetting
+        ///abeyance
+        ///abeyant
+        ///abhorred
+        ///abhorrent
+        ///abide
+        ///abidjan
+        ///abigail
+        ///abject
+        ///ablate
+        ///ablaze
+        ///able
+        ///ablution
+        ///abner
+        ///abnormal
+        ///abo
+        ///aboard
+        ///abode
+        ///abolish
+        ///abolition
+        ///abominable
+        ///abominate
+        ///aboriginal
+        ///aborigine
+        ///aborning
+        ///abort [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string UnixWords {
+            get {
+                return ResourceManager.GetString("UnixWords", resourceCulture);
             }
         }
     }

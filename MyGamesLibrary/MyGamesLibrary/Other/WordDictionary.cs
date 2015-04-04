@@ -9,18 +9,67 @@ namespace MyGamesLibrary.Other
 {
     public static class WordDictionary
     {
-        private static readonly TrieTree _words = new TrieTree();
+        private const int MinimumWordLength = 3;
+        private const int MaximumWordLength = 6;
+
+        private static readonly String[] WordLists = new String[]
+        {
+            Properties.Resources.AllWords,
+            Properties.Resources.TextTwistWords,
+            Properties.Resources.UnabrigedDictionary,
+            Properties.Resources.UnixWords,
+        };
+
+        private static readonly TrieTree _words = new TrieTree( false );
+        private static readonly TrieTree _maxLengthWords = new TrieTree( false );
+
+        public static int Count { get; private set; }
+
         static WordDictionary()
         {
-            foreach( String word in Properties.Resources.TextTwistWords.Split( new String[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries ) )
+            foreach( String wordList in WordLists )
             {
-                _words.AddWord( word.Trim().ToUpper() );
+                foreach( String word in wordList.Split( new String[] { Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries ) )
+                {
+                    string trimmed = word.Trim();
+                    if( MinimumWordLength <= trimmed.Length && trimmed.Length <= MaximumWordLength )
+                    {
+                        if( _words.AddWord( trimmed.ToUpper() ) )
+                        {
+                            Count++;
+                        }
+                    }
+                    if( trimmed.Length == MaximumWordLength )
+                    {
+                        _maxLengthWords.AddWord( trimmed );
+                    }
+                }
             }
         }
 
         private static bool IsWord( String word )
         {
             return _words.Contains( word.Trim().ToUpper() );
+        }
+
+        public static String GetRandomMaxLengthWord()
+        {
+            StringBuilder sb = new StringBuilder();
+            char character;
+            TrieTree child = _maxLengthWords;
+            do
+            {
+                if( !child.GetRandomChild( out character, out child ) )
+                {
+                    break;
+                }
+                else
+                {
+                    sb.Append( character );
+                }
+            }
+            while( sb.Length < MaximumWordLength );
+            return sb.ToString();
         }
 
         public static TrieTree GetPossibleWords( char[] letters )

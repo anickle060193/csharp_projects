@@ -15,6 +15,36 @@ namespace MyGamesLibrary.Games
     {
         private const int Letters = 6;
 
+        private static readonly int[] LetterValues = new int[]
+        {
+            /* A */ 1,
+            /* B */ 3,
+            /* C */ 3,
+            /* D */ 2,
+            /* E */ 1,
+            /* F */ 4,
+            /* G */ 2,
+            /* H */ 4,
+            /* I */ 1,
+            /* J */ 8,
+            /* K */ 5,
+            /* L */ 1,
+            /* M */ 3,
+            /* N */ 1,
+            /* O */ 1,
+            /* P */ 3,
+            /* Q */ 10,
+            /* R */ 1,
+            /* S */ 1,
+            /* T */ 1,
+            /* U */ 1,
+            /* V */ 4,
+            /* W */ 4,
+            /* Y */ 4,
+            /* X */ 8,
+            /* Z */ 10
+        };
+
         private TextBox[] _letterBoxes;
         private TextBox[] _wordBoxes;
         private char[] _letters = new char[ Letters ];
@@ -22,6 +52,8 @@ namespace MyGamesLibrary.Games
         private bool[] _used = new bool[ Letters ];
         private int _enteredLetters;
         private TrieTree _possibleWords;
+        private int _score;
+        private TrieTree _foundWords = new TrieTree();
 
         public override string GameName { get { return "Text Twist"; } }
 
@@ -41,22 +73,32 @@ namespace MyGamesLibrary.Games
         protected override void OnGameStarted( EventArgs e )
         {
             InitializeBoard();
-            uxWordsList.Focus();
+            uxWordList.Focus();
         }
 
         private void InitializeBoard()
         {
-            GenerateRandomCharacters();
+            foreach( TextBox textbox in _letterBoxes )
+            {
+                textbox.Text = "";
+            }
+            foreach( TextBox textbox in _wordBoxes )
+            {
+                textbox.Text = "";
+            }
         }
 
         private void GenerateRandomCharacters()
         {
-            for( int i = 0; i < _letters.Length; i++ )
+            String word = WordDictionary.GetRandomMaxLengthWord();
+            for( int i = 0; i < word.Length && i < _letters.Length; i++ )
             {
-                _letters[ i ] = (char)Utilities.R.Next( (int)'A', (int)'Z' + 1 );
-                _letterBoxes[ i ].Text = _letters[ i ].ToString();
+                _letters[ i ] = word[ i ];
             }
+            Utilities.Randomize( _letters );
             _possibleWords = WordDictionary.GetPossibleWords( _letters );
+
+            UpdateGUI();
         }
 
         private bool LetterEntered( char c )
@@ -80,8 +122,8 @@ namespace MyGamesLibrary.Games
             }
             return false;
         }
-
-        private void TextTwist_KeyPress( object sender, KeyPressEventArgs e )
+        
+        private void TextTwistForm_KeyPress( object sender, KeyPressEventArgs e )
         {
             char enteredLetter = e.KeyChar.ToString().ToUpper()[0];
             if( !LetterEntered( enteredLetter ) )
@@ -98,17 +140,24 @@ namespace MyGamesLibrary.Games
                         {
                             sb.Append( _word[ i ] );
                         }
-                        if( CheckWord( sb.ToString() ) )
+                        String word = sb.ToString();
+                        if( CheckWord( word ) )
                         {
-                            MessageBox.Show( "That's a word" );
-                            while( _enteredLetters > 0 )
+                            uxWordList.Items.Add( word );
+                            _foundWords.AddWord( word );
+                            foreach( char c in word )
                             {
-                                BackspaceWord();
+                                _score += LetterValues[ (int)( c - 'A' ) ];
                             }
+                            MessageBox.Show( "That's a word" );
                         }
                         else
                         {
                             MessageBox.Show( "Not a word" );
+                        }
+                        while( _enteredLetters > 0 )
+                        {
+                            BackspaceWord();
                         }
                     break;
                 }
@@ -136,7 +185,7 @@ namespace MyGamesLibrary.Games
 
         private bool CheckWord( String word )
         {
-            return _possibleWords != null && _possibleWords.Contains( word );
+            return _possibleWords != null && !_foundWords.Contains( word ) && _possibleWords.Contains( word );
         }
 
         private void UpdateGUI()
@@ -146,6 +195,12 @@ namespace MyGamesLibrary.Games
                 _letterBoxes[ i ].Text = _letters[ i ].ToString();
                 _wordBoxes[ i ].Text = _word[ i ].ToString();
             }
+            uxScore.Text = _score.ToString();
+        }
+
+        private void uxNewGame_Click( object sender, EventArgs e )
+        {
+            GenerateRandomCharacters();
         }
     }
 }

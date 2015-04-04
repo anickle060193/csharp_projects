@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,20 @@ namespace MyGamesLibrary.Other
 {
     public class TrieTree
     {
+        private const int AlphabetLength = 26;
+
         bool _hasEmptyString = false;
-        private Dictionary<char, TrieTree> _words = new Dictionary<char, TrieTree>();
+        private Dictionary<char, TrieTree> _characterMap = new Dictionary<char, TrieTree>();
+        private int[][] _lengthByLetter = new int[ AlphabetLength ][];
+
+        public bool ErrorOnInvalidWord { get; set; }
+
+        public TrieTree( bool errorOnInvalidWord )
+        {
+            ErrorOnInvalidWord = errorOnInvalidWord;
+        }
+
+        public TrieTree() : this( true ) { }
 
         public bool Contains( String word )
         {
@@ -19,11 +32,11 @@ namespace MyGamesLibrary.Other
             }
             else if( word[ 0 ] < 'A' || 'Z' < word[ 0 ] )
             {
-                throw new ArgumentException( "Invalid word character: " + word[ 0 ] );
+                return false;
             }
-            else if( _words.ContainsKey( word[ 0 ] ) )
+            else if( _characterMap.ContainsKey( word[ 0 ] ) )
             {
-                return _words[ word[ 0 ] ].Contains( word.Substring( 1 ) );
+                return _characterMap[ word[ 0 ] ].Contains( word.Substring( 1 ) );
             }
             else
             {
@@ -31,23 +44,38 @@ namespace MyGamesLibrary.Other
             }
         }
 
-        public void AddWord( String word )
+        public bool AddWord( String word )
         {
             if( word == "" )
             {
-                _hasEmptyString = true;
+                if( !_hasEmptyString )
+                {
+                    _hasEmptyString = true;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else if( word[ 0 ] < 'A' || 'Z' < word[ 0 ] )
             {
-                throw new ArgumentException( "Invalid word character: " + word[ 0 ] );
+                if( ErrorOnInvalidWord )
+                {
+                    throw new ArgumentException( "Invalid word character: " + word[ 0 ] );
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
-                if( !_words.ContainsKey( word[0] ) )
+                if( !_characterMap.ContainsKey( word[0] ) )
                 {
-                    _words.Add( word[ 0 ], new TrieTree() );
+                    _characterMap.Add( word[ 0 ], new TrieTree( ErrorOnInvalidWord ) );
                 }
-                _words[ word[ 0 ] ].AddWord( word.Substring( 1 ) );
+                return _characterMap[ word[ 0 ] ].AddWord( word.Substring( 1 ) );
             }
         }
 
@@ -67,13 +95,20 @@ namespace MyGamesLibrary.Other
             }
             else if( word[ 0 ] < 'A' || 'Z' < word[ 0 ] )
             {
-                throw new ArgumentException( "Invalid word character: " + word[ 0 ] );
+                if( ErrorOnInvalidWord )
+                {
+                    throw new ArgumentException( "Invalid word character: " + word[ 0 ] );
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
-                if( _words.ContainsKey( word[0]))
+                if( _characterMap.ContainsKey( word[0]))
                 {
-                    return _words[ word[ 0 ] ].RemoveWord( word.Substring( 1 ) );
+                    return _characterMap[ word[ 0 ] ].RemoveWord( word.Substring( 1 ) );
                 }
                 else
                 {
@@ -88,27 +123,54 @@ namespace MyGamesLibrary.Other
             {
                 return this;
             }
-            else if( !_words.ContainsKey( prefix[ 0 ] ) )
+            else if( prefix[ 0 ] < 'A' || 'Z' < prefix[ 0 ] )
+            {
+                if( ErrorOnInvalidWord )
+                {
+                    throw new ArgumentException( "Invalid prefix character: " + prefix[ 0 ] );
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else if( !_characterMap.ContainsKey( prefix[ 0 ] ) )
             {
                 return null;
             }
             else
             {
-                return _words[ prefix[ 0 ] ].GetCompletions( prefix.Substring( 1 ) );
+                return _characterMap[ prefix[ 0 ] ].GetCompletions( prefix.Substring( 1 ) );
             }
         }
 
-        public void GetAll( StringBuilder prefix, List<String> words )
+        public void GetAll( StringBuilder prefix, IList words )
         {
             if( _hasEmptyString )
             {
                 words.Add( prefix.ToString() );
             }
-            foreach( char c in _words.Keys )
+            foreach( char c in _characterMap.Keys )
             {
                 prefix.Append( c );
-                _words[ c ].GetAll( prefix, words );
+                _characterMap[ c ].GetAll( prefix, words );
                 prefix.Length--;
+            }
+        }
+
+        public bool GetRandomChild( out char character, out TrieTree child )
+        {
+            if( _characterMap.Count == 0 )
+            {
+                character = (char)0;
+                child = null;
+                return false;
+            }
+            else
+            {
+                character = _characterMap.Keys.ElementAt( Utilities.R.Next( _characterMap.Count ) );
+                child = _characterMap[ character ];
+                return true;
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -16,6 +17,17 @@ namespace MyGamesLibrary
             float x = ( clientSize.Width - textSize.Width ) / 2.0f;
             float y = ( clientSize.Height - textSize.Height ) / 2.0f;
             return new PointF( x, y );
+        }
+
+        public static void Randomize( IList list )
+        {
+            for( int i = 0; i < list.Count; i++ )
+            {
+                int index = Utilities.R.Next( list.Count );
+                Object temp = list[ index ];
+                list[ index ] = list[ i ];
+                list[ i ] = temp;
+            }
         }
 
         public static double Sqr( double x )
