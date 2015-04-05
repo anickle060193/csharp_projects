@@ -12,6 +12,16 @@ namespace MyGamesLibrary
     {
         public static readonly Random R = new Random();
 
+        public static double NextDouble( double min, double max )
+        {
+            return Utilities.R.NextDouble() * ( max - min ) + min;
+        }
+
+        public static Color RandomColor()
+        {
+            return Color.FromArgb( Utilities.R.Next( 256 ), Utilities.R.Next( 256 ), Utilities.R.Next( 256 ) );
+        }
+
         public static PointF CenterText( SizeF clientSize, SizeF textSize )
         {
             float x = ( clientSize.Width - textSize.Width ) / 2.0f;
@@ -35,9 +45,19 @@ namespace MyGamesLibrary
             return x * x;
         }
 
+        public static float Distance( float x1, float y1, float x2, float y2 )
+        {
+            return (float)Math.Sqrt( Utilities.Sqr( x2 - x1 ) + Utilities.Sqr( y2 - y1 ) );
+        }
+
         public static float Distance( PointF v, PointF w )
         {
-            return (float)Math.Sqrt( Utilities.Sqr( v.X - w.X ) + Utilities.Sqr( v.Y - w.Y ) );
+            return Distance( v.X, v.Y, w.X, w.Y );
+        }
+
+        public static float Distance( Point v, Point w )
+        {
+            return Distance( v.X, v.Y, w.X, w.Y );
         }
 
         public static float DistancePointToSegment( PointF p, PointF v, PointF w )

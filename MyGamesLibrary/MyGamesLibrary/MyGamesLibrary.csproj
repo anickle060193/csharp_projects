@@ -54,6 +54,12 @@
     <Compile Include="GameSelectorForm.Designer.cs">
       <DependentUpon>GameSelectorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Games\ChainReactionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Games\ChainReactionForm.Designer.cs">
+      <DependentUpon>ChainReactionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Games\FloodItForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,6 +116,9 @@
     <Compile Include="Utilities.cs" />
     <EmbeddedResource Include="GameSelectorForm.resx">
       <DependentUpon>GameSelectorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Games\ChainReactionForm.resx">
+      <DependentUpon>ChainReactionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Games\FloodItForm.resx">
       <DependentUpon>FloodItForm.cs</DependentUpon>

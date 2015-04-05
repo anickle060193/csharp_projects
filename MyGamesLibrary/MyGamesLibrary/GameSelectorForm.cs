@@ -15,6 +15,7 @@ namespace MyGamesLibrary
     {
         private static readonly List<GameForm> GAMES = new List<GameForm>()
         {
+            new ChainReactionForm(),
             new SlidingPuzzleForm(),
             new SimonSaysForm(),
             new TicTacToeForm(),
@@ -22,7 +23,7 @@ namespace MyGamesLibrary
             new ReversiForm(),
             new PickUpSticks(),
             new SnakeForm(),
-            new TextTwistForm()
+            new TextTwistForm(),
         };
 
         public GameSelectorForm()
