@@ -23,7 +23,7 @@ namespace MyGamesLibrary.Other
         private static readonly TrieTree _words = new TrieTree( false );
         private static readonly TrieTree _maxLengthWords = new TrieTree( false );
 
-        public static int Count { get; private set; }
+        public static int Count { get { return _words.Count; } }
 
         static WordDictionary()
         {
@@ -34,10 +34,7 @@ namespace MyGamesLibrary.Other
                     string trimmed = word.Trim();
                     if( MinimumWordLength <= trimmed.Length && trimmed.Length <= MaximumWordLength )
                     {
-                        if( _words.AddWord( trimmed.ToUpper() ) )
-                        {
-                            Count++;
-                        }
+                        _words.AddWord( trimmed.ToUpper() );
                     }
                     if( trimmed.Length == MaximumWordLength )
                     {

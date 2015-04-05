@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.uxLetter1 = new System.Windows.Forms.TextBox();
             this.uxLetter2 = new System.Windows.Forms.TextBox();
             this.uxLetter4 = new System.Windows.Forms.TextBox();
@@ -45,11 +46,15 @@
             this.uxWordList = new System.Windows.Forms.ListBox();
             this.uxScoreLabel = new System.Windows.Forms.Label();
             this.uxScore = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.uxTimeRemaining = new System.Windows.Forms.TextBox();
+            this.uxTimeRemainingLabel = new System.Windows.Forms.Label();
             this.uxMenuStrip = new System.Windows.Forms.MenuStrip();
             this.uxGameMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.uxNewGame = new System.Windows.Forms.ToolStripMenuItem();
+            this.uxTimer = new System.Windows.Forms.Timer(this.components);
+            this.uxWordsRemaining = new System.Windows.Forms.TextBox();
+            this.uxWordsRemainingLabel = new System.Windows.Forms.Label();
+            this.uxReponseDisplay = new System.Windows.Forms.Panel();
             this.uxLettersGroup.SuspendLayout();
             this.uxWordGroup.SuspendLayout();
             this.uxMenuStrip.SuspendLayout();
@@ -130,7 +135,7 @@
             this.uxLettersGroup.Controls.Add(this.uxLetter6);
             this.uxLettersGroup.Controls.Add(this.uxLetter5);
             this.uxLettersGroup.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.uxLettersGroup.Location = new System.Drawing.Point(311, 240);
+            this.uxLettersGroup.Location = new System.Drawing.Point(311, 242);
             this.uxLettersGroup.Name = "uxLettersGroup";
             this.uxLettersGroup.Size = new System.Drawing.Size(417, 103);
             this.uxLettersGroup.TabIndex = 12;
@@ -146,7 +151,7 @@
             this.uxWordGroup.Controls.Add(this.uxWordLetter6);
             this.uxWordGroup.Controls.Add(this.uxWordLetter5);
             this.uxWordGroup.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.uxWordGroup.Location = new System.Drawing.Point(311, 131);
+            this.uxWordGroup.Location = new System.Drawing.Point(311, 133);
             this.uxWordGroup.Name = "uxWordGroup";
             this.uxWordGroup.Size = new System.Drawing.Size(417, 103);
             this.uxWordGroup.TabIndex = 13;
@@ -231,56 +236,59 @@
             this.uxWordList.FormattingEnabled = true;
             this.uxWordList.IntegralHeight = false;
             this.uxWordList.ItemHeight = 20;
-            this.uxWordList.Location = new System.Drawing.Point(12, 64);
+            this.uxWordList.Location = new System.Drawing.Point(12, 68);
             this.uxWordList.Name = "uxWordList";
             this.uxWordList.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.uxWordList.Size = new System.Drawing.Size(282, 425);
+            this.uxWordList.Size = new System.Drawing.Size(282, 421);
             this.uxWordList.TabIndex = 20;
             this.uxWordList.UseTabStops = false;
             // 
             // uxScoreLabel
             // 
             this.uxScoreLabel.AutoSize = true;
-            this.uxScoreLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.uxScoreLabel.Location = new System.Drawing.Point(12, 30);
+            this.uxScoreLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uxScoreLabel.Location = new System.Drawing.Point(311, 88);
             this.uxScoreLabel.Name = "uxScoreLabel";
-            this.uxScoreLabel.Size = new System.Drawing.Size(74, 25);
+            this.uxScoreLabel.Size = new System.Drawing.Size(99, 33);
             this.uxScoreLabel.TabIndex = 15;
             this.uxScoreLabel.Text = "Score:";
             // 
             // uxScore
             // 
             this.uxScore.Enabled = false;
-            this.uxScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.uxScore.Location = new System.Drawing.Point(92, 27);
+            this.uxScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uxScore.Location = new System.Drawing.Point(453, 80);
             this.uxScore.Name = "uxScore";
-            this.uxScore.Size = new System.Drawing.Size(202, 31);
+            this.uxScore.Size = new System.Drawing.Size(275, 47);
             this.uxScore.TabIndex = 16;
-            this.uxScore.Text = "0";
-            this.uxScore.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.uxScore.Text = "0 / 0";
+            this.uxScore.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // textBox1
+            // uxTimeRemaining
             // 
-            this.textBox1.Enabled = false;
-            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(479, 27);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(249, 31);
-            this.textBox1.TabIndex = 22;
-            this.textBox1.Text = "00:00.00";
+            this.uxTimeRemaining.Enabled = false;
+            this.uxTimeRemaining.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uxTimeRemaining.Location = new System.Drawing.Point(543, 27);
+            this.uxTimeRemaining.Name = "uxTimeRemaining";
+            this.uxTimeRemaining.Size = new System.Drawing.Size(185, 47);
+            this.uxTimeRemaining.TabIndex = 22;
+            this.uxTimeRemaining.Text = "00:00.00";
+            this.uxTimeRemaining.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label1
+            // uxTimeRemainingLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(300, 30);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(173, 25);
-            this.label1.TabIndex = 21;
-            this.label1.Text = "Time Remaining:";
+            this.uxTimeRemainingLabel.AutoSize = true;
+            this.uxTimeRemainingLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uxTimeRemainingLabel.Location = new System.Drawing.Point(300, 35);
+            this.uxTimeRemainingLabel.Name = "uxTimeRemainingLabel";
+            this.uxTimeRemainingLabel.Size = new System.Drawing.Size(237, 33);
+            this.uxTimeRemainingLabel.TabIndex = 21;
+            this.uxTimeRemainingLabel.Text = "Time Remaining:";
             // 
             // uxMenuStrip
             // 
+            this.uxMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.uxGameMenu});
             this.uxMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.uxMenuStrip.Name = "uxMenuStrip";
             this.uxMenuStrip.Size = new System.Drawing.Size(752, 24);
@@ -288,6 +296,8 @@
             // 
             // uxGameMenu
             // 
+            this.uxGameMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.uxNewGame});
             this.uxGameMenu.Name = "uxGameMenu";
             this.uxGameMenu.Size = new System.Drawing.Size(50, 20);
             this.uxGameMenu.Text = "Game";
@@ -295,17 +305,54 @@
             // uxNewGame
             // 
             this.uxNewGame.Name = "uxNewGame";
-            this.uxNewGame.Size = new System.Drawing.Size(152, 22);
+            this.uxNewGame.Size = new System.Drawing.Size(132, 22);
             this.uxNewGame.Text = "New Game";
             this.uxNewGame.Click += new System.EventHandler(this.uxNewGame_Click);
+            // 
+            // uxTimer
+            // 
+            this.uxTimer.Interval = 50;
+            this.uxTimer.Tick += new System.EventHandler(this.uxTimer_Tick);
+            // 
+            // uxWordsRemaining
+            // 
+            this.uxWordsRemaining.Enabled = false;
+            this.uxWordsRemaining.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uxWordsRemaining.Location = new System.Drawing.Point(201, 27);
+            this.uxWordsRemaining.Name = "uxWordsRemaining";
+            this.uxWordsRemaining.Size = new System.Drawing.Size(93, 35);
+            this.uxWordsRemaining.TabIndex = 25;
+            this.uxWordsRemaining.Text = "0";
+            this.uxWordsRemaining.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // uxWordsRemainingLabel
+            // 
+            this.uxWordsRemainingLabel.AutoSize = true;
+            this.uxWordsRemainingLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uxWordsRemainingLabel.Location = new System.Drawing.Point(7, 33);
+            this.uxWordsRemainingLabel.Name = "uxWordsRemainingLabel";
+            this.uxWordsRemainingLabel.Size = new System.Drawing.Size(188, 25);
+            this.uxWordsRemainingLabel.TabIndex = 24;
+            this.uxWordsRemainingLabel.Text = "Words Remaining:";
+            // 
+            // uxReponseDisplay
+            // 
+            this.uxReponseDisplay.Location = new System.Drawing.Point(453, 359);
+            this.uxReponseDisplay.Name = "uxReponseDisplay";
+            this.uxReponseDisplay.Size = new System.Drawing.Size(130, 130);
+            this.uxReponseDisplay.TabIndex = 26;
+            this.uxReponseDisplay.Paint += new System.Windows.Forms.PaintEventHandler(this.uxReponseDisplay_Paint);
             // 
             // TextTwistForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(752, 501);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.uxReponseDisplay);
+            this.Controls.Add(this.uxWordsRemaining);
+            this.Controls.Add(this.uxWordsRemainingLabel);
+            this.Controls.Add(this.uxTimeRemaining);
+            this.Controls.Add(this.uxTimeRemainingLabel);
             this.Controls.Add(this.uxScore);
             this.Controls.Add(this.uxScoreLabel);
             this.Controls.Add(this.uxWordList);
@@ -349,10 +396,14 @@
         private System.Windows.Forms.ListBox uxWordList;
         private System.Windows.Forms.Label uxScoreLabel;
         private System.Windows.Forms.TextBox uxScore;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox uxTimeRemaining;
+        private System.Windows.Forms.Label uxTimeRemainingLabel;
         private System.Windows.Forms.MenuStrip uxMenuStrip;
+        private System.Windows.Forms.Timer uxTimer;
         private System.Windows.Forms.ToolStripMenuItem uxGameMenu;
         private System.Windows.Forms.ToolStripMenuItem uxNewGame;
+        private System.Windows.Forms.TextBox uxWordsRemaining;
+        private System.Windows.Forms.Label uxWordsRemainingLabel;
+        private System.Windows.Forms.Panel uxReponseDisplay;
     }
 }

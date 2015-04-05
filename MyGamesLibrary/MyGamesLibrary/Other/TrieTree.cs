@@ -17,6 +17,8 @@ namespace MyGamesLibrary.Other
 
         public bool ErrorOnInvalidWord { get; set; }
 
+        public int Count { get; private set; }
+
         public TrieTree( bool errorOnInvalidWord )
         {
             ErrorOnInvalidWord = errorOnInvalidWord;
@@ -51,6 +53,7 @@ namespace MyGamesLibrary.Other
                 if( !_hasEmptyString )
                 {
                     _hasEmptyString = true;
+                    Count++;
                     return true;
                 }
                 else
@@ -75,7 +78,12 @@ namespace MyGamesLibrary.Other
                 {
                     _characterMap.Add( word[ 0 ], new TrieTree( ErrorOnInvalidWord ) );
                 }
-                return _characterMap[ word[ 0 ] ].AddWord( word.Substring( 1 ) );
+                bool added = _characterMap[ word[ 0 ] ].AddWord( word.Substring( 1 ) );
+                if( added )
+                {
+                    Count++;
+                }
+                return added;
             }
         }
 
@@ -86,6 +94,7 @@ namespace MyGamesLibrary.Other
                 if( _hasEmptyString )
                 {
                     _hasEmptyString = false;
+                    Count--;
                     return true;
                 }
                 else
@@ -108,7 +117,12 @@ namespace MyGamesLibrary.Other
             {
                 if( _characterMap.ContainsKey( word[0]))
                 {
-                    return _characterMap[ word[ 0 ] ].RemoveWord( word.Substring( 1 ) );
+                    bool removed = _characterMap[ word[ 0 ] ].RemoveWord( word.Substring( 1 ) );
+                    if( removed )
+                    {
+                        Count--;
+                    }
+                    return removed;
                 }
                 else
                 {
