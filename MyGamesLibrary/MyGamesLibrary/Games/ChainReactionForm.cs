@@ -117,18 +117,19 @@ namespace MyGamesLibrary.Games
                     int newExplosionCount = _settingsForm.GetIntegerSetting( ExplosionsKey );
                     if( newExplosionCount > _explosions.Count )
                     {
-                        while( newExplosionCount > _explosions.Count)
-                        {
-                            _explosions.RemoveAt( 0 );
-                        }
-                    }
-                    else
-                    {
-                        while( newExplosionCount < _explosions.Count)
+                        while( newExplosionCount > _explosions.Count )
                         {
                             _explosions.Add( CreateRandomExplosion() );
                         }
                     }
+                    else if( newExplosionCount < _explosions.Count )
+                    {
+                        while( newExplosionCount < _explosions.Count )
+                        {
+                            _explosions.RemoveAt( 0 );
+                        }
+                    }
+                    Invalidate();
                 }
             }
         }

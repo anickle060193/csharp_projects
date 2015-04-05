@@ -54,6 +54,23 @@ namespace MyGamesLibrary
             }
         }
 
+        private void ResetSettings()
+        {
+            foreach( Setting setting in _settings.Values )
+            {
+                switch( setting.Type )
+                {
+                    case SettingType.Number:
+                        ( (NumericUpDown)setting.EntryControl ).Value = (int)setting.InitialValue;
+                        break;
+
+                    case SettingType.String:
+                        ( (TextBox)setting.EntryControl ).Text = (String)setting.InitialValue;
+                        break;
+                }
+            }
+        }
+
         private Label CreateLabel( Setting setting )
         {
             if( setting.LabelControl == null )
