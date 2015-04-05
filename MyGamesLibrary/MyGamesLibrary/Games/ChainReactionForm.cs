@@ -14,10 +14,14 @@ namespace MyGamesLibrary.Games
     public partial class ChainReactionForm : GameForm
     {
         private const int Explosions = 100;
+        private const int MaximumExplosions = 1000;
         private const int SizeWidth = 1800;
         private const int SizeHeight = 800;
 
-        private List<Explosion> _explosions = new List<Explosion>();
+        private static readonly String ExplosionsKey = "explosions";
+
+        private readonly SettingsForm _settingsForm = new SettingsForm();
+        private readonly List<Explosion> _explosions = new List<Explosion>();
         private bool _mouseDown;
 
         public override string GameName { get { return "Chain Reaction"; } }
@@ -27,6 +31,12 @@ namespace MyGamesLibrary.Games
             InitializeComponent();
 
             this.ClientSize = new Size( SizeWidth, SizeHeight );
+
+            _settingsForm.AddIntegerSetting( ExplosionsKey, "Number of explosions:", Explosions, delegate( object value )
+            {
+                int explosions = (int)value;
+                return 0 <= explosions && explosions <= MaximumExplosions;
+            } );
         }
 
         protected override void OnGameStarted( EventArgs e )
@@ -34,12 +44,17 @@ namespace MyGamesLibrary.Games
             _explosions.Clear();
             for( int i = 0; i < Explosions; i++ )
             {
-                int x = Utilities.R.Next( this.ClientSize.Width );
-                int y = Utilities.R.Next( this.ClientSize.Height );
-                _explosions.Add( new Explosion( x, y ) );
+                _explosions.Add( CreateRandomExplosion() );
             }
 
             uxUpdateTimer.Start();
+        }
+
+        private Explosion CreateRandomExplosion()
+        {
+            int x = Utilities.R.Next( this.ClientSize.Width );
+            int y = Utilities.R.Next( this.ClientSize.Height );
+            return new Explosion( x, y );
         }
 
         private void uxUpdateTimer_Tick( object sender, EventArgs e )
@@ -91,6 +106,31 @@ namespace MyGamesLibrary.Games
         private void ChainReactionForm_MouseUp( object sender, MouseEventArgs e )
         {
             _mouseDown = false;
+        }
+
+        private void ChainReactionForm_KeyPress( object sender, KeyPressEventArgs e )
+        {
+            if( e.KeyChar == ' ' )
+            {
+                if( _settingsForm.ShowDialog() == DialogResult.OK )
+                {
+                    int newExplosionCount = _settingsForm.GetIntegerSetting( ExplosionsKey );
+                    if( newExplosionCount > _explosions.Count )
+                    {
+                        while( newExplosionCount > _explosions.Count)
+                        {
+                            _explosions.RemoveAt( 0 );
+                        }
+                    }
+                    else
+                    {
+                        while( newExplosionCount < _explosions.Count)
+                        {
+                            _explosions.Add( CreateRandomExplosion() );
+                        }
+                    }
+                }
+            }
         }
     }
 

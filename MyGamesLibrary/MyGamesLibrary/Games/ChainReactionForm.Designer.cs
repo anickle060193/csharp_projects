@@ -45,8 +45,9 @@
             this.ClientSize = new System.Drawing.Size(516, 479);
             this.DoubleBuffered = true;
             this.Name = "ChainReactionForm";
-            this.Text = "ChainReactionForm";
+            this.Text = "Chain Reaction";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.ChainReactionForm_Paint);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ChainReactionForm_KeyPress);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ChainReactionForm_MouseClick);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ChainReactionForm_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ChainReactionForm_MouseMove);
