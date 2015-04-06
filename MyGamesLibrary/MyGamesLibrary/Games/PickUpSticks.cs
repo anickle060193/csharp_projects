@@ -12,7 +12,7 @@ namespace MyGamesLibrary.Games
 {
     public partial class PickUpSticks : GameForm
     {
-        private const int Sticks = 1;
+        private const int Sticks = 20;
         private const float ClickThreshold = 2;
         private const int RandomPlacementRange = 400;
         private const int StickThickness = 5;
@@ -84,9 +84,8 @@ namespace MyGamesLibrary.Games
                 {
                     if( _sticks[ i ].Intersects( e.X, e.Y, ClickThreshold ) )
                     {
-                        //_sticks.RemoveAt( i );
-                        //_sticksPickedUp++;
-                        MessageBox.Show( "Clicked" );
+                        _sticks.RemoveAt( i );
+                        _sticksPickedUp++;
                         Invalidate();
                         break;
                     }
@@ -136,7 +135,7 @@ namespace MyGamesLibrary.Games
 
     class Stick
     {
-        private const float ShadowOffset = 1.5f;
+        private const float ShadowOffset = 1.25f;
 
         private Pen _pen = new Pen( Color.White );
         private Pen _shadowPen = new Pen( Color.White );

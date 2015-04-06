@@ -15,15 +15,15 @@ namespace MyGamesLibrary
     {
         private static readonly List<GameForm> GAMES = new List<GameForm>()
         {
-            new ChainReactionForm(),
-            new SlidingPuzzleForm(),
-            new SimonSaysForm(),
-            new TicTacToeForm(),
-            new FloodItForm(),
-            new ReversiForm(),
-            new PickUpSticks(),
-            new SnakeForm(),
-            new TextTwistForm(),
+            /* 0 */ new ChainReactionForm(),
+            /* 1 */ new SlidingPuzzleForm(),
+            /* 2 */ new SimonSaysForm(),
+            /* 3 */ new TicTacToeForm(),
+            /* 4 */ new FloodItForm(),
+            /* 5 */ new ReversiForm(),
+            /* 6 */ new PickUpSticks(),
+            /* 7 */ new SnakeForm(),
+            /* 8 */ new TextTwistForm(),
         };
 
         public GameSelectorForm()
@@ -35,11 +35,6 @@ namespace MyGamesLibrary
                 game.GameEnded += Game_GameEnded;
                 uxGamesList.Items.Add( game.GameName );
             }
-
-            this.Load += (EventHandler)delegate( object sender, EventArgs e )
-            {
-                GAMES[ 7 ].StartGame();
-            };
         }
 
         private void Game_GameEnded( object sender, EventArgs e )
