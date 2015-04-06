@@ -63,7 +63,13 @@ namespace MyGamesLibrary.Games
             _paused = false;
             _gameOver = false;
             _snakeLength = 1;
+
             _snakeHead = _snakeTail = new SnakeBlock();
+
+            int c = Utilities.R.Next( SnakeSpawnSafeBorderWidth, Columns - SnakeSpawnSafeBorderWidth );
+            int r = Utilities.R.Next( SnakeSpawnSafeBorderWidth, Rows - SnakeSpawnSafeBorderWidth );
+            _snakeHead.Location = new Location( r, c );
+            
             GenerateFood();
 
             Invalidate();
@@ -118,25 +124,45 @@ namespace MyGamesLibrary.Games
             {
                 if( !_paused )
                 {
+                    bool shouldUpdate = false;
                     switch( e.KeyCode )
                     {
                         case Keys.Left:
-                            _direction = Direction.Left;
+                            if( _firstMove || ( _direction != Direction.Left && _direction != Direction.Right ) )
+                            {
+                                _direction = Direction.Left;
+                                shouldUpdate = true;
+                            }
                             break;
 
                         case Keys.Right:
-                            _direction = Direction.Right;
+                            if( _firstMove || ( _direction != Direction.Left && _direction != Direction.Right ) )
+                            {
+                                _direction = Direction.Right;
+                                shouldUpdate = true;
+                            }
                             break;
 
                         case Keys.Down:
-                            _direction = Direction.Down;
+                            if( _firstMove || ( _direction != Direction.Up && _direction != Direction.Down ) )
+                            {
+                                _direction = Direction.Down;
+                                shouldUpdate = true;
+                            }
                             break;
 
                         case Keys.Up:
-                            _direction = Direction.Up;
+                            if( _firstMove || ( _direction != Direction.Up && _direction != Direction.Down ) )
+                            {
+                                _direction = Direction.Up;
+                                shouldUpdate = true;
+                            }
                             break;
                     }
-                    UpdateSnake();
+                    if( shouldUpdate )
+                    {
+                        UpdateSnake();
+                    }
                     if( _firstMove )
                     {
                         _firstMove = false;
