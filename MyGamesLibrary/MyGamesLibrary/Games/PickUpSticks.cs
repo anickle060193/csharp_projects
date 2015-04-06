@@ -19,7 +19,7 @@ namespace MyGamesLibrary.Games
         private const int MaximumAllowedSticksToPickUp = 3;
         private const int MinimumAllowedSticksToPickup = 1;
 
-        private static readonly SolidBrush PlayerTurnBrush = new SolidBrush( Color.FromArgb( 50, Color.Black ) );
+        private static readonly SolidBrush PlayerTurnBrush = new SolidBrush( Color.FromArgb( 100, Color.White ) );
         private static readonly Font PlayerTurnFont = new Font( FontFamily.GenericSansSerif, 36 );
         private static readonly String[] PlayerTurnStrings = { "Player One's Turn", "Player Two's Turn" };
         private static readonly String[] GameOverStrings = { "Player One Wins!", "Player Two Wins" };

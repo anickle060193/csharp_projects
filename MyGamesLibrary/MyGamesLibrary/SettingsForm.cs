@@ -104,6 +104,8 @@ namespace MyGamesLibrary
 
                     case SettingType.Number:
                         NumericUpDown numeric = new NumericUpDown();
+                        numeric.Maximum = Decimal.MaxValue;
+                        numeric.Minimum = Decimal.MinValue;
                         numeric.ValueChanged += (EventHandler)delegate( object sender, EventArgs e )
                         {
                             setting.CurrentValue = (int)numeric.Value;
