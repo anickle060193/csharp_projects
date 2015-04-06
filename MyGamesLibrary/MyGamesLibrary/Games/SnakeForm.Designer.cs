@@ -34,6 +34,7 @@
             // 
             // uxSnakeTimer
             // 
+            this.uxSnakeTimer.Interval = 200;
             this.uxSnakeTimer.Tick += new System.EventHandler(this.uxSnakeTimer_Tick);
             // 
             // SnakeForm

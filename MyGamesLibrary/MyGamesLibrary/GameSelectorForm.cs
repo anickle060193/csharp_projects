@@ -35,6 +35,11 @@ namespace MyGamesLibrary
                 game.GameEnded += Game_GameEnded;
                 uxGamesList.Items.Add( game.GameName );
             }
+
+            this.Load += (EventHandler)delegate( object sender, EventArgs e )
+            {
+                GAMES[ 7 ].StartGame();
+            };
         }
 
         private void Game_GameEnded( object sender, EventArgs e )
