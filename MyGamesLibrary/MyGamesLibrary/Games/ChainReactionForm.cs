@@ -142,8 +142,8 @@ namespace MyGamesLibrary.Games
         private const int MaximumInitialRadius = 20;
         private const int MinimumMaxRadius = 40;
         private const int MaximumMaxRadius = 50;
-        private const float MaximumExplosionRate = 20;
-        private const float MinimumExplosionRate = 10;
+        private const float MaximumExplosionRate = 0.20f;
+        private const float MinimumExplosionRate = 0.10f;
         private const int UpdateDelay = 20;
         private const int DisappearDelay = 2 * MillisecondsPerSecond;
         private const int TransitionDelay = 20;
@@ -226,7 +226,7 @@ namespace MyGamesLibrary.Games
             {
                 if( millisecondsElapsed >= UpdateDelay )
                 {
-                    Radius += ExplosionRate * ( millisecondsElapsed / 100.0f );
+                    Radius += ExplosionRate * millisecondsElapsed;
                     if( Radius >= MaxRadius )
                     {
                         Radius = MaxRadius;
@@ -240,17 +240,21 @@ namespace MyGamesLibrary.Games
                 if( millisecondsElapsed >= DisappearDelay )
                 {
                     CurrentState = State.Leaving;
+                    _lastUpdate = now;
                 }
             }
             else if( CurrentState == State.Leaving )
             {
-                if( millisecondsElapsed >= TransitionDelay )
+                if( millisecondsElapsed >= UpdateDelay )
                 {
-                    _alpha -= TransitionStep;
-                    if( _alpha <= 0 )
+                    Radius -= ExplosionRate * millisecondsElapsed;
+                    _alpha = (int)( Radius / MaxRadius * 255 );
+                    if( Radius < 0 )
                     {
+                        Radius = 0;
                         CurrentState = State.Gone;
                     }
+                    _lastUpdate = now;
                 }
             }
         }
