@@ -55,7 +55,7 @@ namespace SortingVisualizer
             SortingVisualizerControl svc = new SortingVisualizerControl()
             {
                 Dock = DockStyle.Fill,
-                ArrayLength = 10000,
+                ArrayLength = 100,
                 DisplayReads = false,
                 DisplayCompares = false,
                 DisplayEditCount = false,

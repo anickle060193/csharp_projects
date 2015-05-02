@@ -1,4 +1,5 @@
 ﻿using MyGamesLibrary.Games;
+using MyGamesLibrary.Games.LightBot;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,6 +25,7 @@ namespace MyGamesLibrary
             /* 6 */ new PickUpSticks(),
             /* 7 */ new SnakeForm(),
             /* 8 */ new TextTwistForm(),
+            /* 9 */ new LightBotForm(),
         };
 
         public GameSelectorForm()
@@ -35,6 +37,8 @@ namespace MyGamesLibrary
                 game.GameEnded += Game_GameEnded;
                 uxGamesList.Items.Add( game.GameName );
             }
+
+            this.Shown += ( s, e ) => StartGame( 9 );
         }
 
         private void Game_GameEnded( object sender, EventArgs e )

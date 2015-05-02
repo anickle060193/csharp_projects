@@ -66,6 +66,21 @@
     <Compile Include="Games\FloodItForm.Designer.cs">
       <DependentUpon>FloodItForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Games\LightBot\BoardCell.cs" />
+    <Compile Include="Other\Graph.cs" />
+    <Compile Include="Games\LightBot\LightBotBoard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Games\LightBot\LightBotBoard.Designer.cs">
+      <DependentUpon>LightBotBoard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Games\LightBot\LightBotForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Games\LightBot\LightBotForm.Designer.cs">
+      <DependentUpon>LightBotForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Games\LightBot\LightBotGame.cs" />
     <Compile Include="Games\PickUpSticks.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,6 +112,7 @@
       <DependentUpon>TicTacToeForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Location.cs" />
+    <Compile Include="Other\LinkedListCell.cs" />
     <Compile Include="Other\TrieTree.cs" />
     <Compile Include="Other\WordDictionary.cs" />
     <Compile Include="Program.cs" />
@@ -128,6 +144,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Games\FloodItForm.resx">
       <DependentUpon>FloodItForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Games\LightBot\LightBotBoard.resx">
+      <DependentUpon>LightBotBoard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Games\LightBot\LightBotForm.resx">
+      <DependentUpon>LightBotForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Games\PickUpSticks.resx">
       <DependentUpon>PickUpSticks.cs</DependentUpon>
