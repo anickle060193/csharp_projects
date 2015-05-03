@@ -24,16 +24,51 @@ namespace MyGamesLibrary.Games.LightBot
         private static readonly Pen BORDER_PEN = new Pen( Color.Black ) { Width = BORDER_WIDTH };
         private static readonly Pen WALL_BORDER_PEN = new Pen( Color.Blue ) { Width = 3 };
 
+        private LightBotGame _game;
 
-        private LightBotGame _game = new LightBotGame();
+        public LightBotGame Game
+        {
+            get { return _game; }
+            set
+            {
+                if( _game != null )
+                {
+                    _game.GameUpdated -= LightBotGame_GameUpdated;
+                }
+                _game = value;
+                if( _game != null )
+                {
+                    _game.GameUpdated += LightBotGame_GameUpdated;
+                }
+            }
+        }
 
         public LightBotBoard()
         {
             InitializeComponent();
         }
 
+        #region Event Handlers
+
+        private void LightBotGame_GameUpdated( object sender, EventArgs e )
+        {
+            Invalidate();
+        }
+
         private void LightBotBoard_Paint( object sender, PaintEventArgs e )
         {
+            DrawBoard( e.Graphics );
+        }
+
+        #endregion
+
+        private void DrawBoard( Graphics g )
+        {
+            if( _game == null )
+            {
+                return;
+            }
+
             float width = this.Width;
             float height = this.Height;
 
@@ -44,14 +79,14 @@ namespace MyGamesLibrary.Games.LightBot
             {
                 for( int c = 0; c < LightBotGame.COLUMNS; c++ )
                 {
-                    Brush b = BRUSHES[ (int)_game.Board[ r, c ].Type ];
+                    Brush b = BRUSHES[ (int)Game.Board[ r, c ].Type ];
                     float x = c * cellWidth;
                     float y = r * cellHeight;
-                    e.Graphics.FillRectangle( b, x, y, cellWidth, cellHeight );
+                    g.FillRectangle( b, x, y, cellWidth, cellHeight );
                 }
             }
 
-            DrawBorder( e.Graphics );
+            DrawBorder( g );
         }
 
         private void DrawBorder( Graphics g )

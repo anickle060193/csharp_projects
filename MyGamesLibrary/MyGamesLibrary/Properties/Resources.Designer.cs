@@ -138,18 +138,31 @@ namespace MyGamesLibrary.Properties {
         ///1209
         ///1209
         ///123
-        ///123
-        ///123098
-        ///123098
-        ///1234
-        ///1234
-        ///12345
-        ///12345
-        ///12 [rest of string was truncated]&quot;;.
+        ///123 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string AllWords {
             get {
                 return ResourceManager.GetString("AllWords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap LightUp {
+            get {
+                object obj = ResourceManager.GetObject("LightUp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap MoveForward {
+            get {
+                object obj = ResourceManager.GetObject("MoveForward", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -235,6 +248,26 @@ namespace MyGamesLibrary.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TurnLeft {
+            get {
+                object obj = ResourceManager.GetObject("TurnLeft", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TurnRight {
+            get {
+                object obj = ResourceManager.GetObject("TurnRight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to aa
         ///aal
         ///aalii
@@ -288,14 +321,7 @@ namespace MyGamesLibrary.Properties {
         ///abarticular
         ///abarticulation
         ///abas
-        ///abased
-        ///abasedly
-        ///abasedness
-        ///abasement
-        ///abaser
-        ///abasgi
-        ///abashed
-        ///a [rest of string was truncated]&quot;;.
+        ///abased        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string UnabrigedDictionary {
             get {
@@ -373,14 +399,7 @@ namespace MyGamesLibrary.Properties {
         ///abo
         ///aboard
         ///abode
-        ///abolish
-        ///abolition
-        ///abominable
-        ///abominate
-        ///aboriginal
-        ///aborigine
-        ///aborning
-        ///abort [rest of string was truncated]&quot;;.
+        ///aboli [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string UnixWords {
             get {

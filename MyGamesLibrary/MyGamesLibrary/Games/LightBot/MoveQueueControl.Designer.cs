@@ -1,6 +1,6 @@
 ﻿namespace MyGamesLibrary.Games.LightBot
 {
-    partial class LightBotBoard
+    partial class MoveQueueControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,19 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
-            // 
-            // LightBotBoard
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Silver;
-            this.DoubleBuffered = true;
-            this.Name = "LightBotBoard";
-            this.Size = new System.Drawing.Size(450, 450);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.LightBotBoard_Paint);
-            this.ResumeLayout(false);
-
+            components = new System.ComponentModel.Container();
         }
 
         #endregion

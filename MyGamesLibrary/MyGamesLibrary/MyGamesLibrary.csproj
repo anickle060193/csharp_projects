@@ -67,6 +67,24 @@
       <DependentUpon>FloodItForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Games\LightBot\BoardCell.cs" />
+    <Compile Include="Games\LightBot\MoveControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Games\LightBot\MoveControl.Designer.cs">
+      <DependentUpon>MoveControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Games\LightBot\MoveQueueControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Games\LightBot\MoveQueueControl.Designer.cs">
+      <DependentUpon>MoveQueueControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Games\LightBot\PossibleMoves.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Games\LightBot\PossibleMoves.Designer.cs">
+      <DependentUpon>PossibleMoves.cs</DependentUpon>
+    </Compile>
     <Compile Include="Other\Graph.cs" />
     <Compile Include="Games\LightBot\LightBotBoard.cs">
       <SubType>UserControl</SubType>
@@ -151,6 +169,12 @@
     <EmbeddedResource Include="Games\LightBot\LightBotForm.resx">
       <DependentUpon>LightBotForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Games\LightBot\MoveControl.resx">
+      <DependentUpon>MoveControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Games\LightBot\PossibleMoves.resx">
+      <DependentUpon>PossibleMoves.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Games\PickUpSticks.resx">
       <DependentUpon>PickUpSticks.cs</DependentUpon>
     </EmbeddedResource>
@@ -209,6 +233,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AllWords.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MoveForward.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MoveForward.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RotateRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RotateRight1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RotateRight2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RotateRight3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LightUp.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

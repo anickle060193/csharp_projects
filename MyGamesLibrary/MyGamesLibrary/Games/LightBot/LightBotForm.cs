@@ -14,9 +14,21 @@ namespace MyGamesLibrary.Games.LightBot
     {
         public override string GameName { get { return "Light Bot"; } }
 
+        private LightBotGame _game;
+
         public LightBotForm()
         {
             InitializeComponent();
+        }
+
+        protected override void OnGameStarted( EventArgs e )
+        {
+            _game = new LightBotGame();
+            uxLightBotBoard.Game = _game;
+            uxLightBotMoveQueue.Game = _game;
+            uxPossibleMoves.Game = _game;
+            _game.AddMove( LightBotGame.MoveType.Forward );
+            _game.AddMove( LightBotGame.MoveType.TurnLeft );
         }
     }
 }

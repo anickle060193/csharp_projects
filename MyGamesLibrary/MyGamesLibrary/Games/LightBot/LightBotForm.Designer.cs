@@ -28,32 +28,59 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lightBotBoard1 = new MyGamesLibrary.Games.LightBot.LightBotBoard();
+            this.uxLightBotBoard = new MyGamesLibrary.Games.LightBot.LightBotBoard();
+            this.uxLightBotMoveQueue = new MyGamesLibrary.Games.LightBot.MoveQueueControl();
+            this.uxPossibleMoves = new MyGamesLibrary.Games.LightBot.PossibleMoves();
             this.SuspendLayout();
             // 
-            // lightBotBoard1
+            // uxLightBotBoard
             // 
-            this.lightBotBoard1.Location = new System.Drawing.Point(12, 12);
-            this.lightBotBoard1.Name = "lightBotBoard1";
-            this.lightBotBoard1.Size = new System.Drawing.Size(450, 450);
-            this.lightBotBoard1.TabIndex = 0;
+            this.uxLightBotBoard.BackColor = System.Drawing.Color.Silver;
+            this.uxLightBotBoard.Game = null;
+            this.uxLightBotBoard.Location = new System.Drawing.Point(12, 12);
+            this.uxLightBotBoard.Name = "uxLightBotBoard";
+            this.uxLightBotBoard.Size = new System.Drawing.Size(450, 450);
+            this.uxLightBotBoard.TabIndex = 0;
+            // 
+            // uxLightBotMoveQueue
+            // 
+            this.uxLightBotMoveQueue.BackColor = System.Drawing.Color.Gray;
+            this.uxLightBotMoveQueue.Game = null;
+            this.uxLightBotMoveQueue.Location = new System.Drawing.Point(468, 12);
+            this.uxLightBotMoveQueue.Name = "uxLightBotMoveQueue";
+            this.uxLightBotMoveQueue.Size = new System.Drawing.Size(320, 538);
+            this.uxLightBotMoveQueue.TabIndex = 1;
+            // 
+            // uxPossibleMoves
+            // 
+            this.uxPossibleMoves.AutoSize = true;
+            this.uxPossibleMoves.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.uxPossibleMoves.Location = new System.Drawing.Point(12, 468);
+            this.uxPossibleMoves.Name = "uxPossibleMoves";
+            this.uxPossibleMoves.Size = new System.Drawing.Size(450, 82);
+            this.uxPossibleMoves.TabIndex = 2;
             // 
             // LightBotForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(476, 475);
-            this.Controls.Add(this.lightBotBoard1);
+            this.ClientSize = new System.Drawing.Size(800, 561);
+            this.Controls.Add(this.uxPossibleMoves);
+            this.Controls.Add(this.uxLightBotMoveQueue);
+            this.Controls.Add(this.uxLightBotBoard);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
             this.Name = "LightBotForm";
             this.Text = "LightBotForm";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private LightBotBoard lightBotBoard1;
+        private LightBotBoard uxLightBotBoard;
+        private MoveQueueControl uxLightBotMoveQueue;
+        private PossibleMoves uxPossibleMoves;
     }
 }

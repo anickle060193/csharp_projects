@@ -43,6 +43,11 @@ namespace MyGamesLibrary.Other
             }
         }
 
+        public static bool operator !=( Edge<TNode> e1, Edge<TNode> e2 )
+        {
+            return !( e1 == e2 );
+        }
+
         public override int GetHashCode()
         {
             return _hashCode;
@@ -86,6 +91,11 @@ namespace MyGamesLibrary.Other
                 return e1.Destination.Equals( e2.Destination )
                     && e1.Value.Equals( e1.Value );
             }
+        }
+
+        public static bool operator !=( OutgoingEdge<TNode, TEdge> e1, OutgoingEdge<TNode, TEdge> e2 )
+        {
+            return !( e1 == e2 );
         }
 
         public override int GetHashCode()
