@@ -14,12 +14,17 @@ namespace SortingVisualizer.Sorters
         {
             for( int i = 1; i < array.Length; i++ )
             {
-                int j = i;
-                while( j > 0 && array.CompareValuesAt( j - 1, j ) > 0 )
+                int temp = array[ i ];
+                int j;
+                for( j = i; j > 0; j-- )
                 {
-                    array.Swap( j, j - 1 );
-                    j--;
+                    if( array.CompareValues( array[ j - 1 ], temp ) < 0 )
+                    {
+                        break;
+                    }
+                    array[ j ] = array[ j - 1 ];
                 }
+                array[ j ] = temp;
             }
         }
     }
