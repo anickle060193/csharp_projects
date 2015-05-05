@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AdamNickle.Settings;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -32,9 +33,8 @@ namespace MyGamesLibrary.Games
 
             this.ClientSize = new Size( SizeWidth, SizeHeight );
 
-            _settingsForm.AddIntegerSetting( ExplosionsKey, "Number of explosions:", Explosions, delegate( object value )
+            _settingsForm.AddIntegerSetting( ExplosionsKey, "Number of explosions:", Explosions, delegate( int explosions )
             {
-                int explosions = (int)value;
                 return 0 <= explosions && explosions <= MaximumExplosions;
             } );
         }
