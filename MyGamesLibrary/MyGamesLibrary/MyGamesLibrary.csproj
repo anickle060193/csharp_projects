@@ -229,25 +229,16 @@
     <None Include="Resources\AllWords.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\MoveForward.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\MoveForward.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\RotateRight.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\RotateRight1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\RotateRight2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\RotateRight3.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\LightUp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TurnLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TurnRight.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -37,7 +37,7 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Name = "MoveControl";
-            this.Size = new System.Drawing.Size(73, 73);
+            this.Size = new System.Drawing.Size(75, 75);
             this.ResumeLayout(false);
 
         }
