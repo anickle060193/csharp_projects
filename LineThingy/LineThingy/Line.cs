@@ -76,7 +76,8 @@ namespace LineThingy
             {
                 using( Pen p = new Pen(  Color.FromArgb( Utilities.R.Next( 100, 185 ), Utilities.RandomColor() ) ) { Width = LineWidth } )
                 {
-                    g.DrawLines( p, Utilities.ConvertToCanvas( _points, canvasWidth, canvasHeight ).ToArray() );
+                    PointF[] points = Utilities.ConvertToCanvas( _points, canvasWidth, canvasHeight ).ToArray();
+                    g.DrawLines( p, points );
                 }
                 if( _child != null )
                 {

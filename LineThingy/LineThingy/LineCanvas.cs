@@ -100,14 +100,35 @@ namespace LineThingy
             {
                 return;
             }
-            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            foreach( Line l in _lines )
-            {
-                l.Paint( e.Graphics, Width, Height );
-            }
+            PaintLines( e.Graphics, Width, Height );
         }
 
         #endregion
+
+        private void PaintLines( Graphics g, int width, int height )
+        {
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            foreach( Line l in _lines )
+            {
+                l.Paint( g, width, height );
+            }
+        }
+
+        public Bitmap CreateBitmap()
+        {
+            return CreateBitmap( Width, Height );
+        }
+
+        public Bitmap CreateBitmap( int width, int height )
+        {
+            Bitmap b = new Bitmap( width, height );
+            using( Graphics g = Graphics.FromImage( b ) )
+            {
+                g.Clear( BackColor );
+                PaintLines( g, width, height );
+            }
+            return b;
+        }
 
         public void AddPoint( float x, float y )
         {

@@ -29,15 +29,23 @@
         private void InitializeComponent()
         {
             this.uxLineCanvas = new LineThingy.LineCanvas();
+            this.uxSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.SuspendLayout();
             // 
             // uxLineCanvas
             // 
             this.uxLineCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uxLineCanvas.Location = new System.Drawing.Point(0, 0);
+            this.uxLineCanvas.MinimumDistancePercent = 0.1F;
             this.uxLineCanvas.Name = "uxLineCanvas";
+            this.uxLineCanvas.PreventPainting = false;
             this.uxLineCanvas.Size = new System.Drawing.Size(284, 261);
             this.uxLineCanvas.TabIndex = 0;
+            // 
+            // uxSaveFileDialog
+            // 
+            this.uxSaveFileDialog.DefaultExt = "png";
+            this.uxSaveFileDialog.Filter = "Image Files (*.png)|*.png";
             // 
             // LineThingyForm
             // 
@@ -54,6 +62,7 @@
         #endregion
 
         private LineCanvas uxLineCanvas;
+        private System.Windows.Forms.SaveFileDialog uxSaveFileDialog;
 
     }
 }

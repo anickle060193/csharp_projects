@@ -13,6 +13,8 @@ namespace LineThingy
 {
     public partial class LineThingyForm : Form
     {
+        private const int PaintingInterval = 20;
+        private const int GeneratingInterval = 1;
         private const int FontPadding = 10;
         private static readonly Font CountFont = new Font( FontFamily.GenericSansSerif, 20.0f );
         private static readonly SolidBrush CountBrush = new SolidBrush( Color.FromArgb( 150, Color.Black ) );
@@ -34,6 +36,7 @@ namespace LineThingy
             uxLineCanvas.KeyPress += uxLineCanvas_KeyPress;
 
             _timer.Tick += Timer_Tick;
+            _timer.Interval = PaintingInterval;
         }
 
         private void Timer_Tick( object sender, EventArgs e )
@@ -65,11 +68,23 @@ namespace LineThingy
                 uxLineCanvas.PreventPainting = !uxLineCanvas.PreventPainting;
                 if( uxLineCanvas.PreventPainting )
                 {
-                    _timer.Interval = 1;
+                    _timer.Interval = GeneratingInterval;
                 }
                 else
                 {
-                    _timer.Interval = 500;
+                    _timer.Interval = PaintingInterval;
+                }
+            }
+            else if( e.KeyChar == 's' )
+            {
+                _timer.Stop();
+                if( uxSaveFileDialog.ShowDialog() == DialogResult.OK )
+                {
+                    using( Bitmap b = uxLineCanvas.CreateBitmap( 2000, 2000 ) )
+                    {
+                        b.Save( uxSaveFileDialog.FileName, System.Drawing.Imaging.ImageFormat.Png );
+                    }
+                    MessageBox.Show( "Image finished saving.", "Image Saved", MessageBoxButtons.OK );
                 }
             }
         }
