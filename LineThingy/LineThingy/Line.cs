@@ -9,8 +9,6 @@ namespace LineThingy
 {
     public class Line
     {
-        private const int CirclePointRadius = 2;
-        private const int CirclePointDiameter = 2 * CirclePointRadius;
         private const int LineWidth = 2;
         private readonly Random R = new Random();
 
@@ -76,7 +74,7 @@ namespace LineThingy
         {
             if( _points.Count > 1 )
             {
-                using( Pen p = new Pen( _color ) { Width = LineWidth } )
+                using( Pen p = new Pen(  Color.FromArgb( Utilities.R.Next( 100, 185 ), Utilities.RandomColor() ) ) { Width = LineWidth } )
                 {
                     g.DrawLines( p, Utilities.ConvertToCanvas( _points, canvasWidth, canvasHeight ).ToArray() );
                 }

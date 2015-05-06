@@ -32,6 +32,8 @@ namespace LineThingy
 
         public float MinimumDistancePercent { get; set; }
 
+        public bool PreventPainting { get; set; }
+
         public LineCanvas()
         {
             InitializeComponent();
@@ -49,30 +51,16 @@ namespace LineThingy
         {
             if( e.Button == MouseButtons.Left )
             {
-                PointF p = Utilities.ConvertFromCanvas( e.X, e.Y, Width, Height );
-                _currentLine.AddPoint( p );
-                _lastPoint = p;
-
-                OnLinesUpdated( EventArgs.Empty );
+                AddPoint( e.X, e.Y );
             }
             else if( e.Button == MouseButtons.Right )
             {
-                _currentLine = new Line();
-                _lines.Add( _currentLine );
-                _lastPoint = Utilities.InvalidPoint;
-
-                OnLinesUpdated( EventArgs.Empty );
+                StartNewLine();
             }
             else if( e.Button == MouseButtons.Middle )
             {
-                _lines.Clear();
-                _currentLine = new Line();
-                _lines.Add( _currentLine );
-                _lastPoint = Utilities.InvalidPoint;
-
-                OnLinesUpdated( EventArgs.Empty );
+                Reset();
             }
-            Invalidate();
         }
 
         private void LineCanvas_MouseDown( object sender, MouseEventArgs e )
@@ -108,6 +96,10 @@ namespace LineThingy
 
         private void LineCanvas_Paint( object sender, PaintEventArgs e )
         {
+            if( PreventPainting )
+            {
+                return;
+            }
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             foreach( Line l in _lines )
             {
@@ -116,6 +108,37 @@ namespace LineThingy
         }
 
         #endregion
+
+        public void AddPoint( float x, float y )
+        {
+            PointF p = Utilities.ConvertFromCanvas( x, y, Width, Height );
+            _currentLine.AddPoint( p );
+            _lastPoint = p;
+
+            OnLinesUpdated( EventArgs.Empty );
+            Invalidate();
+        }
+
+        public void StartNewLine()
+        {
+            _currentLine = new Line();
+            _lines.Add( _currentLine );
+            _lastPoint = Utilities.InvalidPoint;
+
+            OnLinesUpdated( EventArgs.Empty );
+            Invalidate();
+        }
+
+        public void Reset()
+        {
+            _lines.Clear();
+            _currentLine = new Line();
+            _lines.Add( _currentLine );
+            _lastPoint = Utilities.InvalidPoint;
+
+            OnLinesUpdated( EventArgs.Empty );
+            Invalidate();
+        }
 
         protected void OnLinesUpdated( EventArgs e )
         {
