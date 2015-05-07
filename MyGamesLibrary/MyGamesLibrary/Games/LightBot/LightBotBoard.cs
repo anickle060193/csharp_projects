@@ -18,7 +18,7 @@ namespace MyGamesLibrary.Games.LightBot
         static LightBotBoard()
         {
             BRUSHES[ (int)BoardCell.BoardTile.Empty ] = new SolidBrush( Color.LightGray );
-            BRUSHES[ (int)BoardCell.BoardTile.LitLight ] = new SolidBrush( Color.LightYellow );
+            BRUSHES[ (int)BoardCell.BoardTile.LitLight ] = new SolidBrush( Color.Yellow );
             BRUSHES[ (int)BoardCell.BoardTile.UnlitLight ] = new SolidBrush( Color.LightSkyBlue );
         }
         private static readonly Pen BORDER_PEN = new Pen( Color.Black ) { Width = BORDER_WIDTH };
@@ -87,6 +87,29 @@ namespace MyGamesLibrary.Games.LightBot
             }
 
             DrawBorder( g );
+
+            Location player = _game.PlayerLocation;
+            float playerX = player.Column * cellWidth;
+            float playerY = player.Row * cellHeight;
+
+            switch( _game.PlayerFacing )
+            {
+                case Direction.Down:
+                    g.DrawImage( Properties.Resources.PlayerDown, playerX, playerY, cellWidth, cellHeight );
+                    break;
+
+                case Direction.Left:
+                    g.DrawImage( Properties.Resources.PlayerLeft, playerX, playerY, cellWidth, cellHeight );
+                    break;
+
+                case Direction.Right:
+                    g.DrawImage( Properties.Resources.PlayerRight, playerX, playerY, cellWidth, cellHeight );
+                    break;
+
+                case Direction.Up:
+                    g.DrawImage( Properties.Resources.PlayerUp, playerX, playerY, cellWidth, cellHeight );
+                    break;
+            }
         }
 
         private void DrawBorder( Graphics g )

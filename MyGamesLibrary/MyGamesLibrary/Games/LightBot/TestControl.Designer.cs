@@ -1,6 +1,6 @@
 ﻿namespace MyGamesLibrary.Games.LightBot
 {
-    partial class MoveControl
+    partial class TestControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,19 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
-            // 
-            // MoveControl
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Name = "MoveControl";
-            this.Size = new System.Drawing.Size(75, 75);
-            this.Click += new System.EventHandler(this.MoveControl_Click);
-            this.ResumeLayout(false);
-
+            components = new System.ComponentModel.Container();
         }
 
         #endregion

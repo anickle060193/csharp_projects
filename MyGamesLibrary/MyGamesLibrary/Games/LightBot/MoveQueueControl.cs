@@ -43,7 +43,7 @@ namespace MyGamesLibrary.Games.LightBot
             SuspendLayout();
 
             Controls.Clear();
-            foreach( LightBotGame.MoveType move in _game.Moves )
+            foreach( MoveType move in _game.Moves )
             {
                 Controls.Add( new MoveControl( move ) );
             }

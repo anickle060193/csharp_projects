@@ -127,6 +127,18 @@
   <data name="MoveForward" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MoveForward.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="PlayerDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PlayerDown.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PlayerLeft" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PlayerLeft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PlayerRight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PlayerRight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PlayerUp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PlayerUp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="TextTwistWords" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TextTwistWords.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>

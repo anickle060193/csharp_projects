@@ -23,12 +23,30 @@ namespace MyGamesLibrary.Games.LightBot
 
         protected override void OnGameStarted( EventArgs e )
         {
+            InitializeGame();
+        }
+
+        #region Event Handlers
+
+        private void uxExecute_Click( object sender, EventArgs e )
+        {
+            _game.Execute();
+        }
+
+        private void uxReset_Click( object sender, EventArgs e )
+        {
+            InitializeGame();
+        }
+
+        #endregion
+
+        private void InitializeGame()
+        {
             _game = new LightBotGame();
             uxLightBotBoard.Game = _game;
             uxLightBotMoveQueue.Game = _game;
             uxPossibleMoves.Game = _game;
-            _game.AddMove( LightBotGame.MoveType.Forward );
-            _game.AddMove( LightBotGame.MoveType.TurnLeft );
+            _game.Initialize();
         }
     }
 }

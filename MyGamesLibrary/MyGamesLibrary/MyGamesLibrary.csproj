@@ -83,10 +83,16 @@
       <DependentUpon>MoveQueueControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Games\LightBot\PossibleMoves.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Games\LightBot\PossibleMoves.Designer.cs">
       <DependentUpon>PossibleMoves.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Games\LightBot\TestControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Games\LightBot\TestControl.Designer.cs">
+      <DependentUpon>TestControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Other\Graph.cs" />
     <Compile Include="Games\LightBot\LightBotBoard.cs">
@@ -235,10 +241,22 @@
     <None Include="Resources\LightUp.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\TurnRight.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\TurnLeft.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\TurnRight.png" />
+    <None Include="Resources\PlayerDown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PlayerUp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PlayerLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PlayerRight.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
