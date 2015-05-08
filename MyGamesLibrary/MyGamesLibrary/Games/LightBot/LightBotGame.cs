@@ -8,9 +8,35 @@ namespace MyGamesLibrary.Games.LightBot
 {
     public enum MoveType { Forward, LightUp, TurnRight, TurnLeft }
 
+    public class MoveAddedEventArgs : EventArgs
+    {
+        public MoveType MoveType { get; private set; }
+        public int Index { get; private set; }
+
+        public MoveAddedEventArgs( MoveType move, int index )
+        {
+            MoveType = move;
+            Index = index;
+        }
+    }
+
+    public class MoveRemovedEventArgs : EventArgs
+    {
+        public int RemovedIndex { get; private set; }
+
+        public MoveRemovedEventArgs( int index )
+        {
+            RemovedIndex = index;
+        }
+    }
+
     public class LightBotGame
     {
         public event EventHandler GameUpdated;
+        public event EventHandler<MoveAddedEventArgs> MoveAdded;
+        public event EventHandler<MoveAddedEventArgs> PossibleMoveAdded;
+        public event EventHandler<MoveRemovedEventArgs> MoveRemoved;
+        public event EventHandler<MoveRemovedEventArgs> PossibleMoveRemoved;
 
         public const int ROWS = 10;
         public const int COLUMNS = 10;
@@ -38,9 +64,15 @@ namespace MyGamesLibrary.Games.LightBot
 
         public LightBotGame()
         {
-            PlayerLocation = new Location( 0, 0 );
-
             Board = new BoardCell[ ROWS, COLUMNS ];
+
+            Initialize();
+        }
+
+        public void Initialize()
+        {
+            PlayerLocation = new Location( 0, 0 );
+            PlayerFacing = Direction.Down;
 
             for( int r = 0; r < LightBotGame.ROWS; r++ )
             {
@@ -49,7 +81,14 @@ namespace MyGamesLibrary.Games.LightBot
                     Board[ r, c ] = new BoardCell( BoardCell.BoardTile.Empty );
                 }
             }
+
+            Location light = Location.GenerateRandomLocation( ROWS, COLUMNS );
+            Board[ light.Row, light.Column ].Type = BoardCell.BoardTile.UnlitLight;
+
+            SendUpdate();
         }
+
+        #region Event Handler Callers
 
         protected void OnGameUpdated( EventArgs e )
         {
@@ -60,17 +99,56 @@ namespace MyGamesLibrary.Games.LightBot
             }
         }
 
+        protected void OnMoveAdded( MoveAddedEventArgs e )
+        {
+            EventHandler<MoveAddedEventArgs> handler = MoveAdded;
+            if( handler != null )
+            {
+                handler( this, e );
+            }
+        }
+
+        protected void OnPossibleMoveAdded( MoveAddedEventArgs e )
+        {
+            EventHandler<MoveAddedEventArgs> handler = PossibleMoveAdded;
+            if( handler != null )
+            {
+                handler( this, e );
+            }
+        }
+
+        protected void OnMoveRemoved( MoveRemovedEventArgs e )
+        {
+            EventHandler<MoveRemovedEventArgs> handler = MoveRemoved;
+            if( handler != null )
+            {
+                handler( this, e );
+            }
+        }
+
+        protected void OnPossibleMoveRemoved( MoveRemovedEventArgs e )
+        {
+            EventHandler<MoveRemovedEventArgs> handler = PossibleMoveRemoved;
+            if( handler != null )
+            {
+                handler( this, e );
+            }
+        }
+
+        #endregion
+
         private void SendUpdate()
         {
             OnGameUpdated( EventArgs.Empty );
         }
 
-        public void Initialize()
+        public void Reset()
         {
-            SendUpdate();
-
-            Location light = Location.GenerateRandomLocation( ROWS, COLUMNS );
-            Board[ light.Row, light.Column ].Type = BoardCell.BoardTile.UnlitLight;
+            while( _moves.Count > 0 )
+            {
+                RemoveMove( 0 );
+            }
+            Initialize();
         }
 
         public void AddMove( MoveType move )
@@ -80,7 +158,7 @@ namespace MyGamesLibrary.Games.LightBot
                 return;
             }
             _moves.Add( move );
-            SendUpdate();
+            OnMoveAdded( new MoveAddedEventArgs( move, _moves.Count - 1 ) );
         }
 
         public void RemoveMove( int index )
@@ -90,7 +168,7 @@ namespace MyGamesLibrary.Games.LightBot
                 return;
             }
             _moves.RemoveAt( index );
-            SendUpdate();
+            OnMoveRemoved( new MoveRemovedEventArgs( index ) );
         }
 
         public async void Execute()

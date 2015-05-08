@@ -21,13 +21,16 @@ namespace MyGamesLibrary.Games.LightBot
             {
                 if( _game != null )
                 {
-                    _game.GameUpdated -= LightBotGame_GameUpdated;
+                    _game.PossibleMoveAdded += LightBotGame_PossibleMoveAdded;
+                    _game.PossibleMoveRemoved += LightBotGame_PossibleMoveRemoved;
                 }
                 _game = value;
                 if( _game != null )
                 {
-                    _game.GameUpdated += LightBotGame_GameUpdated;
+                    _game.PossibleMoveAdded -= LightBotGame_PossibleMoveAdded;
+                    _game.PossibleMoveRemoved -= LightBotGame_PossibleMoveRemoved;
                 }
+                InitializeNewGame();
             }
         }
 
@@ -38,27 +41,14 @@ namespace MyGamesLibrary.Games.LightBot
 
         #region Event Handlers
 
-        private void LightBotGame_GameUpdated( object sender, EventArgs e )
+        private void LightBotGame_PossibleMoveRemoved( object sender, MoveRemovedEventArgs e )
         {
-            SuspendLayout();
+            RemoveMove( e.RemovedIndex );
+        }
 
-            foreach( Control c in Controls )
-            {
-                MoveControl moveControl = c as MoveControl;
-                if( moveControl != null )
-                {
-                    moveControl.MoveClicked -= MoveControl_MoveClicked;
-                }
-            }
-            Controls.Clear();
-            foreach( MoveType possibleMove in _game.PossibleMoves )
-            {
-                MoveControl control = new MoveControl( possibleMove );
-                control.MoveClicked += MoveControl_MoveClicked;
-                Controls.Add( control );
-            }
-
-            ResumeLayout();
+        private void LightBotGame_PossibleMoveAdded( object sender, MoveAddedEventArgs e )
+        {
+            AddMove( e.MoveType, e.Index );
         }
 
         private void MoveControl_MoveClicked( object sender, MoveClickedEventArgs e )
@@ -67,5 +57,37 @@ namespace MyGamesLibrary.Games.LightBot
         }
 
         #endregion
+
+        private void AddMove( MoveType move, int index )
+        {
+            MoveControl c = new MoveControl( move );
+            c.MoveClicked += MoveControl_MoveClicked;
+            Controls.Add( c );
+            Controls.SetChildIndex( c, index );
+        }
+
+        private void RemoveMove( int index )
+        {
+            Controls.RemoveAt( index );
+        }
+
+        private void InitializeNewGame()
+        {
+            SuspendLayout();
+
+            Controls.Clear();
+
+            if( _game != null )
+            {
+                foreach( MoveType move in _game.PossibleMoves )
+                {
+                    MoveControl c = new MoveControl( move );
+                    c.MoveClicked += MoveControl_MoveClicked;
+                    Controls.Add( c );
+                }
+            }
+
+            ResumeLayout();
+        }
     }
 }

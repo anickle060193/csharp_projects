@@ -35,7 +35,7 @@ namespace MyGamesLibrary.Games.LightBot
 
         private void uxReset_Click( object sender, EventArgs e )
         {
-            InitializeGame();
+            _game.Reset();
         }
 
         #endregion
@@ -46,7 +46,7 @@ namespace MyGamesLibrary.Games.LightBot
             uxLightBotBoard.Game = _game;
             uxLightBotMoveQueue.Game = _game;
             uxPossibleMoves.Game = _game;
-            _game.Initialize();
+            _game.Reset();
         }
     }
 }

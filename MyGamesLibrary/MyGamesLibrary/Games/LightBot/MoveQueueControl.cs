@@ -21,12 +21,14 @@ namespace MyGamesLibrary.Games.LightBot
             {
                 if( _game != null )
                 {
-                    _game.GameUpdated -= LightBotGame_GameUpdated;
+                    _game.MoveAdded -= LightBotGame_MoveAdded;
+                    _game.MoveRemoved -= LightBotGame_MoveRemoved;
                 }
                 _game = value;
                 if( _game != null )
                 {
-                    _game.GameUpdated += LightBotGame_GameUpdated;
+                    _game.MoveAdded += LightBotGame_MoveAdded;
+                    _game.MoveRemoved += LightBotGame_MoveRemoved;
                 }
             }
         }
@@ -38,19 +40,46 @@ namespace MyGamesLibrary.Games.LightBot
 
         #region Event Handlers
 
-        private void LightBotGame_GameUpdated( object sender, EventArgs e )
+        private void LightBotGame_MoveAdded( object sender, MoveAddedEventArgs e )
+        {
+            AddMove( e.MoveType, e.Index );
+        }
+
+        private void LightBotGame_MoveRemoved( object sender, MoveRemovedEventArgs e )
+        {
+            RemoveMove( e.RemovedIndex );
+        }
+
+        #endregion
+
+        private void AddMove( MoveType move, int index )
+        {
+            MoveControl c = new MoveControl( move );
+            Controls.Add( c );
+            Controls.SetChildIndex( c, index );
+        }
+
+        private void RemoveMove( int index )
+        {
+            Controls.RemoveAt( index );
+        }
+
+        private void InitializeNewGame()
         {
             SuspendLayout();
 
             Controls.Clear();
-            foreach( MoveType move in _game.Moves )
+
+            if( _game != null )
             {
-                Controls.Add( new MoveControl( move ) );
+                foreach( MoveType move in _game.PossibleMoves )
+                {
+                    MoveControl c = new MoveControl( move );
+                    Controls.Add( c );
+                }
             }
 
             ResumeLayout();
         }
-
-        #endregion
     }
 }

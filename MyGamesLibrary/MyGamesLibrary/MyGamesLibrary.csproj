@@ -88,12 +88,6 @@
     <Compile Include="Games\LightBot\PossibleMoves.Designer.cs">
       <DependentUpon>PossibleMoves.cs</DependentUpon>
     </Compile>
-    <Compile Include="Games\LightBot\TestControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Games\LightBot\TestControl.Designer.cs">
-      <DependentUpon>TestControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Other\Graph.cs" />
     <Compile Include="Games\LightBot\LightBotBoard.cs">
       <SubType>UserControl</SubType>
