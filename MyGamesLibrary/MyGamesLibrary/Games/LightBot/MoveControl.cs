@@ -12,13 +12,30 @@ namespace MyGamesLibrary.Games.LightBot
 {
     public partial class MoveControl : UserControl
     {
+        private static readonly Color NormalBackground = Color.SlateGray;
+        private static readonly Color CurrentMoveBackground = Color.DarkSlateGray;
+
         public event EventHandler<MoveClickedEventArgs> MoveClicked;
 
+        private bool _isCurrentMove;
+
         public MoveType MoveType { get; private set; }
+
+        public bool IsCurrentMove
+        {
+            get { return _isCurrentMove; }
+            set
+            {
+                _isCurrentMove = value;
+                BackColor = _isCurrentMove ? CurrentMoveBackground : NormalBackground;
+            }
+        }
 
         public MoveControl( MoveType moveType )
         {
             InitializeComponent();
+
+            IsCurrentMove = false;
 
             MoveType = moveType;
             switch( MoveType )

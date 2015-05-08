@@ -51,7 +51,7 @@
             this.uxLightBotMoveQueue.Game = null;
             this.uxLightBotMoveQueue.Location = new System.Drawing.Point(468, 12);
             this.uxLightBotMoveQueue.Name = "uxLightBotMoveQueue";
-            this.uxLightBotMoveQueue.Size = new System.Drawing.Size(320, 450);
+            this.uxLightBotMoveQueue.Size = new System.Drawing.Size(393, 450);
             this.uxLightBotMoveQueue.TabIndex = 1;
             // 
             // uxPossibleMoves
@@ -70,7 +70,7 @@
             this.uxExecute.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.uxExecute.Location = new System.Drawing.Point(468, 468);
             this.uxExecute.Name = "uxExecute";
-            this.uxExecute.Size = new System.Drawing.Size(320, 52);
+            this.uxExecute.Size = new System.Drawing.Size(393, 52);
             this.uxExecute.TabIndex = 3;
             this.uxExecute.Text = "EXECUTE";
             this.uxExecute.UseVisualStyleBackColor = true;
@@ -81,7 +81,7 @@
             this.uxReset.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.uxReset.Location = new System.Drawing.Point(468, 520);
             this.uxReset.Name = "uxReset";
-            this.uxReset.Size = new System.Drawing.Size(320, 52);
+            this.uxReset.Size = new System.Drawing.Size(393, 52);
             this.uxReset.TabIndex = 4;
             this.uxReset.Text = "RESET";
             this.uxReset.UseVisualStyleBackColor = true;
@@ -91,7 +91,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 584);
+            this.ClientSize = new System.Drawing.Size(873, 584);
             this.Controls.Add(this.uxReset);
             this.Controls.Add(this.uxExecute);
             this.Controls.Add(this.uxPossibleMoves);

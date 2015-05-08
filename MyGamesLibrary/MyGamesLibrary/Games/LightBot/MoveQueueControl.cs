@@ -13,6 +13,7 @@ namespace MyGamesLibrary.Games.LightBot
     public partial class MoveQueueControl : FlowLayoutPanel
     {
         private LightBotGame _game;
+        private MoveControl _currentMove;
 
         public LightBotGame Game
         {
@@ -23,12 +24,14 @@ namespace MyGamesLibrary.Games.LightBot
                 {
                     _game.MoveAdded -= LightBotGame_MoveAdded;
                     _game.MoveRemoved -= LightBotGame_MoveRemoved;
+                    _game.GameUpdated -= LightBotGame_GameUpdated;
                 }
                 _game = value;
                 if( _game != null )
                 {
                     _game.MoveAdded += LightBotGame_MoveAdded;
                     _game.MoveRemoved += LightBotGame_MoveRemoved;
+                    _game.GameUpdated += LightBotGame_GameUpdated;
                 }
             }
         }
@@ -48,6 +51,19 @@ namespace MyGamesLibrary.Games.LightBot
         private void LightBotGame_MoveRemoved( object sender, MoveRemovedEventArgs e )
         {
             RemoveMove( e.RemovedIndex );
+        }
+
+        private void LightBotGame_GameUpdated( object sender, EventArgs e )
+        {
+            if( _currentMove != null )
+            {
+                _currentMove.IsCurrentMove = false;
+            }
+            if( _game.CurrentMove != LightBotGame.InvalidMoveIndex && _game.CurrentMove < _game.Moves.Count )
+            {
+                _currentMove = Controls[ _game.CurrentMove ] as MoveControl;
+                _currentMove.IsCurrentMove = true;
+            }
         }
 
         #endregion

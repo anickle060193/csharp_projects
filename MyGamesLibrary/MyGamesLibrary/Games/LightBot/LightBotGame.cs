@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace MyGamesLibrary.Games.LightBot
 {
@@ -32,39 +33,39 @@ namespace MyGamesLibrary.Games.LightBot
 
     public class LightBotGame
     {
+        public const int ROWS = 10;
+        public const int COLUMNS = 10;
+        public const int InvalidMoveIndex = -1;
+
         public event EventHandler GameUpdated;
         public event EventHandler<MoveAddedEventArgs> MoveAdded;
         public event EventHandler<MoveAddedEventArgs> PossibleMoveAdded;
         public event EventHandler<MoveRemovedEventArgs> MoveRemoved;
         public event EventHandler<MoveRemovedEventArgs> PossibleMoveRemoved;
 
-        public const int ROWS = 10;
-        public const int COLUMNS = 10;
-
         private List<MoveType> _moves = new List<MoveType>();
+        private Timer _timer = new Timer();
 
         public BoardCell[ , ] Board { get; private set; }
         public Location PlayerLocation { get; private set; }
         public Direction PlayerFacing { get; private set; }
-        public IEnumerable<MoveType> Moves
+        public int CurrentMove { get; private set; }
+        public IList<MoveType> Moves
         {
-            get { return _moves.AsEnumerable(); }
+            get { return new List<MoveType>( _moves ); }
         }
-        public IEnumerable<MoveType> PossibleMoves
+        public IList<MoveType> PossibleMoves
         {
-            get
-            {
-                foreach( MoveType moveType in Enum.GetValues( typeof( MoveType ) ) )
-                {
-                    yield return moveType;
-                }
-            }
+            get { return new List<MoveType>( (MoveType[])Enum.GetValues( typeof( MoveType ) ) ); }
         }
         public bool Executing { get; private set; }
 
         public LightBotGame()
         {
             Board = new BoardCell[ ROWS, COLUMNS ];
+
+            _timer.Tick += Timer_Tick;
+            _timer.Interval = 750;
 
             Initialize();
         }
@@ -73,6 +74,7 @@ namespace MyGamesLibrary.Games.LightBot
         {
             PlayerLocation = new Location( 0, 0 );
             PlayerFacing = Direction.Down;
+            CurrentMove = InvalidMoveIndex;
 
             for( int r = 0; r < LightBotGame.ROWS; r++ )
             {
@@ -87,6 +89,23 @@ namespace MyGamesLibrary.Games.LightBot
 
             SendUpdate();
         }
+
+        #region Event Handlers
+
+        private void Timer_Tick( object sender, EventArgs e )
+        {
+            if( CurrentMove < _moves.Count )
+            {
+                ExecuteMove( _moves[ CurrentMove ] );
+                CurrentMove++;
+            }
+            else
+            {
+                StopExecution();
+            }
+        }
+
+        #endregion
 
         #region Event Handler Callers
 
@@ -144,10 +163,13 @@ namespace MyGamesLibrary.Games.LightBot
 
         public void Reset()
         {
+            StopExecution();
+
             while( _moves.Count > 0 )
             {
                 RemoveMove( 0 );
             }
+
             Initialize();
         }
 
@@ -171,17 +193,19 @@ namespace MyGamesLibrary.Games.LightBot
             OnMoveRemoved( new MoveRemovedEventArgs( index ) );
         }
 
-        public async void Execute()
+        public void Execute()
         {
             Executing = true;
+            CurrentMove = 0;
+            _timer.Start();
+        }
 
-            foreach( MoveType move in _moves )
-            {
-                await Task.Delay( 1000 );
-                ExecuteMove( move );
-            }
-
+        public void StopExecution()
+        {
+            _timer.Stop();
             Executing = false;
+            CurrentMove = InvalidMoveIndex;
+            SendUpdate();
         }
 
         private void ExecuteMove( MoveType move )
